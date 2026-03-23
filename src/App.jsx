@@ -12,6 +12,7 @@ import {
 import clientView from "./assets/client_view.png";
 import clientNew from "./assets/client_new.png"
 import dashboardView from "./assets/dashboard_view.png";
+import wordmarkLogo from "./assets/wordmark-logo-tra.svg";
 
 const months = [
   {
@@ -89,21 +90,21 @@ const features = [
 ];
 
 const problemIllustrations = [
-  <LuMessageSquare key="whatsapp" className="h-10 w-10 text-emerald-700" />,
-  <LuMail key="email" className="h-10 w-10 text-amber-700" />,
-  <LuFileX key="missing" className="h-10 w-10 text-violet-700" />,
+  <LuMessageSquare key="whatsapp" className="w-10 h-10 text-emerald-700" />,
+  <LuMail key="email" className="w-10 h-10 text-amber-700" />,
+  <LuFileX key="missing" className="w-10 h-10 text-violet-700" />,
 ];
 
 const featureIllustrations = [
-  <LuClipboardList key="track" className="h-12 w-12 text-emerald-700" />,
-  <LuBellRing key="reminders" className="h-12 w-12 text-amber-700" />,
-  <LuFolder key="folder" className="h-12 w-12 text-blue-700" />,
+  <LuClipboardList key="track" className="w-12 h-12 text-emerald-700" />,
+  <LuBellRing key="reminders" className="w-12 h-12 text-amber-700" />,
+  <LuFolder key="folder" className="w-12 h-12 text-blue-700" />,
 ];
 
 function StepCard({ index, title, body }) {
   return (
-    <div className="relative rounded-3xl border border-black/10 bg-white p-8 shadow-sm">
-      <div className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-emerald-50 text-base font-bold text-accentDark">
+    <div className="relative p-8 bg-white border shadow-sm rounded-3xl border-black/10">
+      <div className="absolute flex items-center justify-center w-10 h-10 text-base font-bold rounded-full right-4 top-4 bg-emerald-50 text-accentDark">
         {index + 1}
       </div>
       <p className="text-lg font-semibold text-ink">{title}</p>
@@ -116,6 +117,7 @@ export default function App() {
   const [active, setActive] = useState(0);
   const month = months[active];
   const revealRefs = useRef([]);
+  const [isPaused, setIsPaused] = useState(false);
   const slides = [
     {
       src: dashboardView,
@@ -131,8 +133,15 @@ export default function App() {
     }
   ];
   const [slideIndex, setSlideIndex] = useState(0);
+  const prefersReducedMotion = useRef(false);
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      prefersReducedMotion.current = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+    }
+
     const elements = revealRefs.current.filter(Boolean);
     if (!elements.length) return undefined;
 
@@ -152,6 +161,14 @@ export default function App() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (prefersReducedMotion.current || isPaused) return undefined;
+    const timer = setInterval(() => {
+      setSlideIndex((current) => (current + 1) % slides.length);
+    }, 5500);
+    return () => clearInterval(timer);
+  }, [isPaused, slides.length]);
+
   const goPrev = () => {
     setSlideIndex((current) =>
       current === 0 ? slides.length - 1 : current - 1
@@ -164,14 +181,17 @@ export default function App() {
 
   return (
     <div className="relative overflow-hidden">
-      <div className="pointer-events-none absolute -top-24 left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-emerald-200/40 blur-3xl animate-glow" />
-      <div className="pointer-events-none absolute top-40 right-10 h-48 w-48 rounded-full bg-amber-200/40 blur-3xl animate-glow" />
+      <div className="absolute w-64 h-64 -translate-x-1/2 rounded-full pointer-events-none -top-24 left-1/2 bg-emerald-200/40 blur-3xl animate-glow" />
+      <div className="absolute w-48 h-48 rounded-full pointer-events-none top-40 right-10 bg-amber-200/40 blur-3xl animate-glow" />
 
       <header className="px-6 pt-6">
-        <div className="mx-auto flex w-full max-w-6xl items-center justify-between">
-          <div className="flex items-center gap-3 font-semibold">
-            <span className="h-3 w-3 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-700" />
-            <span>Archeion</span>
+        <div className="flex items-center justify-between w-full max-w-6xl mx-auto">
+          <div className="flex items-center">
+            <img
+              src={wordmarkLogo}
+              alt="Archeion"
+              className="w-auto h-8 md:h-9 lg:h-10"
+            />
           </div>
           <a
             href="#waitlist"
@@ -190,24 +210,36 @@ export default function App() {
           <div className="mx-auto grid w-full max-w-6xl gap-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
               <p className="mb-5 text-sm font-semibold uppercase tracking-[0.35em] text-muted">
-                For small accounting firms in Cyprus
+                For accounting firms in Cyprus
               </p>
-              <h1 className="font-display text-5xl font-semibold leading-tight text-ink md:text-7xl">
-                Stop chasing clients for invoices and receipts
+              <h1 className="text-5xl font-semibold leading-tight font-display text-ink md:text-7xl">
+                Collect client invoices in days, not weeks
               </h1>
-              <p className="mt-7 text-2xl text-muted">
-                Collect documents automatically and see what’s missing in one
-                place.
+              <p className="text-2xl mt-7 text-muted">
+                Automated requests, gentle reminders, and a single dashboard
+                that shows what is still missing.
               </p>
+              <div className="flex flex-wrap gap-3 mt-6 text-sm font-semibold text-ink/80">
+                {["Choose month", "Share client link", "Track missing"].map(
+                  (item) => (
+                    <span
+                      key={item}
+                      className="px-4 py-2 bg-white border rounded-full border-black/10"
+                    >
+                      {item}
+                    </span>
+                  )
+                )}
+              </div>
               <form
                 id="waitlist"
-                className="mt-8 flex flex-col gap-3 sm:flex-row"
+                className="flex flex-col gap-3 mt-8 sm:flex-row"
               >
                 <input
                   type="email"
                   placeholder="Your work email"
                   required
-                  className="h-14 flex-1 rounded-full border border-black/10 bg-white px-6 text-lg shadow-sm focus:border-emerald-500 focus:outline-none"
+                  className="flex-1 px-6 text-lg bg-white border rounded-full shadow-sm h-14 border-black/10 focus:border-emerald-500 focus:outline-none"
                 />
                 <button
                   className="h-14 rounded-full bg-accent px-7 text-lg font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-accentDark"
@@ -217,7 +249,7 @@ export default function App() {
                 </button>
               </form>
               <p className="mt-4 text-base text-muted">
-                No pricing yet. You’ll get early access and a short demo call.
+                No pricing yet. We will send a short demo and early access.
               </p>
             </div>
 
@@ -225,16 +257,16 @@ export default function App() {
               <div className="absolute -left-6 -top-6 hidden h-full w-full rounded-[32px] border border-black/5 bg-white/50 lg:block" />
               <div className="relative rounded-[28px] border border-black/10 bg-white p-8 shadow-soft">
                 <div className="flex items-center justify-between text-base text-muted">
-                  <span className="rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-accentDark">
+                  <span className="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-50 text-accentDark">
                     {month.label}
                   </span>
                   <span>{month.complete}</span>
                 </div>
-                <div className="mt-5 grid gap-3">
+                <div className="grid gap-3 mt-5">
                   {month.rows.map((row) => (
                     <div
                       key={row.name}
-                      className="flex items-center justify-between rounded-xl bg-highlight px-5 py-4 text-base"
+                      className="flex items-center justify-between px-5 py-4 text-base rounded-xl bg-highlight"
                     >
                       <span>{row.name}</span>
                       <span
@@ -247,7 +279,7 @@ export default function App() {
                     </div>
                   ))}
                 </div>
-                <div className="mt-5 flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-3 mt-5">
                   <button className="rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white">
                     Send reminders
                   </button>
@@ -257,7 +289,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="mt-6 flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 mt-6">
                 {months.map((item, index) => (
                   <button
                     key={item.label}
@@ -283,12 +315,12 @@ export default function App() {
           className="px-6 py-32 border-t border-black/5 reveal"
           ref={(el) => (revealRefs.current[1] = el)}
         >
-          <div className="mx-auto w-full max-w-6xl">
+          <div className="w-full max-w-6xl mx-auto">
             <div className="max-w-2xl">
               <p className="text-sm font-semibold uppercase tracking-[0.35em] text-muted">
                 The problem
               </p>
-              <h2 className="mt-5 font-display text-4xl font-semibold text-ink md:text-6xl">
+              <h2 className="mt-5 text-4xl font-semibold font-display text-ink md:text-6xl">
                 The monthly document chase
               </h2>
               <p className="mt-5 text-xl text-muted">
@@ -296,10 +328,9 @@ export default function App() {
                 still missing.
               </p>
             </div>
-            <div className="mt-10 rounded-3xl border border-black/10 bg-white px-8 py-6 shadow-soft">
+            <div className="px-8 py-6 mt-10 bg-white border rounded-3xl border-black/10 shadow-soft">
               <div className="flex flex-wrap items-center justify-between gap-6">
                 <div>
-                
                   <p className="mt-3 text-xl font-semibold text-ink">
                     The messy monthly inbox
                   </p>
@@ -351,19 +382,20 @@ export default function App() {
                 </svg>
               </div>
             </div>
-            <div className="mt-14 grid gap-8 md:grid-cols-3">
+            <div className="grid gap-8 mt-14 md:grid-cols-3">
               {problemCards.map((item, index) => (
                 <div
                   key={item.title}
-                  className="rounded-3xl border border-black/10 bg-white p-10 shadow-sm"
+                  className="p-10 bg-white border shadow-sm rounded-3xl border-black/10 stagger-item"
+                  style={{ transitionDelay: `${index * 90}ms` }}
                 >
-                  <div className="mb-5 flex items-center justify-between">
-                    <div className="rounded-2xl bg-highlight p-3">
+                  <div className="flex items-center justify-between mb-5">
+                    <div className="p-3 rounded-2xl bg-highlight">
                       {problemIllustrations[index]}
                     </div>
                  
                   </div>
-                  <h3 className="font-display text-xl font-semibold">
+                  <h3 className="text-xl font-semibold font-display">
                     {item.title}
                   </h3>
                   <p className="mt-4 text-base text-muted">{item.body}</p>
@@ -371,10 +403,10 @@ export default function App() {
               ))}
             </div>
 
-            <div className="mt-12 grid gap-3 text-lg font-semibold text-ink">
-              <p>Clients send documents late or incomplete</p>
-              <p>You don’t know what’s missing</p>
-              <p>You waste hours chasing them</p>
+            <div className="grid gap-3 mt-12 text-lg font-semibold text-ink">
+              <p>Documents arrive late or incomplete</p>
+              <p>You do not know who is done</p>
+              <p>Follow-ups take hours every month</p>
             </div>
           </div>
         </section>
@@ -388,10 +420,10 @@ export default function App() {
               <p className="text-sm font-semibold uppercase tracking-[0.35em] text-muted">
                 The solution
               </p>
-              <h2 className="mt-5 font-display text-4xl font-semibold text-ink md:text-6xl">
+              <h2 className="mt-5 text-4xl font-semibold font-display text-ink md:text-6xl">
                 A calm, simple way to collect documents
               </h2>
-              <div className="mt-12 grid gap-6">
+              <div className="grid gap-6 mt-12">
                 {steps.map((step, index) => (
                   <StepCard
                     key={step.title}
@@ -403,11 +435,11 @@ export default function App() {
               </div>
             </div>
 
-            <div className="rounded-3xl border border-black/10 bg-white p-10 shadow-soft">
+            <div className="p-10 bg-white border rounded-3xl border-black/10 shadow-soft">
               <p className="text-base font-semibold text-muted">
                 Missing documents overview
               </p>
-              <div className="mt-7 space-y-4">
+              <div className="space-y-4 mt-7">
                 {[
                   { label: "March 2026", status: "6 missing", tone: "warn" },
                   { label: "February 2026", status: "All received", tone: "ok" },
@@ -415,7 +447,7 @@ export default function App() {
                 ].map((item) => (
                   <div
                     key={item.label}
-                    className="flex items-center justify-between rounded-xl bg-highlight px-6 py-4 text-base"
+                    className="flex items-center justify-between px-6 py-4 text-base rounded-xl bg-highlight"
                   >
                     <span>{item.label}</span>
                     <span
@@ -428,7 +460,7 @@ export default function App() {
                   </div>
                 ))}
               </div>
-              <div className="mt-6 flex items-center justify-between text-sm text-muted">
+              <div className="flex items-center justify-between mt-6 text-sm text-muted">
                 <span>Automatic reminders</span>
                 <span>Every Friday at 15:00</span>
               </div>
@@ -440,30 +472,31 @@ export default function App() {
           className="bg-[#f7f5f2] px-6 py-36 border-t border-black/5 reveal"
           ref={(el) => (revealRefs.current[3] = el)}
         >
-          <div className="mx-auto w-full max-w-6xl">
+          <div className="w-full max-w-6xl mx-auto">
             <div className="max-w-2xl">
               <p className="text-base font-semibold uppercase tracking-[0.35em] text-muted">
                 The essentials
               </p>
-              <h2 className="mt-6 font-display text-5xl font-semibold text-ink md:text-7xl">
+              <h2 className="mt-6 text-5xl font-semibold font-display text-ink md:text-7xl">
                 Only the essentials
               </h2>
               <p className="mt-6 text-2xl text-muted">
                 Everything you need to stay in control each month.
               </p>
             </div>
-            <div className="mt-16 grid gap-10 md:grid-cols-3">
+            <div className="grid gap-10 mt-16 md:grid-cols-3">
               {features.map((feature, index) => (
                 <div
                   key={feature.title}
-                  className="rounded-3xl border border-black/10 bg-white p-12 shadow-sm"
+                  className="p-12 bg-white border shadow-sm rounded-3xl border-black/10 stagger-item"
+                  style={{ transitionDelay: `${index * 90}ms` }}
                 >
-                  <div className="mb-6 flex items-center gap-4">
-                    <div className="rounded-2xl bg-highlight p-3">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="p-3 rounded-2xl bg-highlight">
                       {featureIllustrations[index]}
                     </div>
                   </div>
-                  <h3 className="font-display text-2xl font-semibold">
+                  <h3 className="text-2xl font-semibold font-display">
                     {feature.title}
                   </h3>
                   <p className="mt-5 text-lg text-muted">{feature.body}</p>
@@ -477,12 +510,12 @@ export default function App() {
           className="px-6 py-32 border-t border-black/5 reveal"
           ref={(el) => (revealRefs.current[4] = el)}
         >
-          <div className="mx-auto w-full max-w-6xl">
+          <div className="w-full max-w-6xl mx-auto">
             <div className="max-w-2xl">
               <p className="text-sm font-semibold uppercase tracking-[0.35em] text-muted">
                 The dashboard
               </p>
-              <h2 className="mt-5 font-display text-4xl font-semibold text-ink md:text-6xl">
+              <h2 className="mt-5 text-4xl font-semibold font-display text-ink md:text-6xl">
                 See the full picture at a glance
               </h2>
               <p className="mt-5 text-xl text-muted">
@@ -491,8 +524,19 @@ export default function App() {
               </p>
             </div>
             <div className="mt-12">
-              <div className="relative mx-auto w-full max-w-6xl rounded-[32px] border border-black/10 bg-white p-4 shadow-soft md:p-6">
-                <div className="overflow-hidden rounded-[24px] border border-black/10 bg-white">
+              <div
+                className="relative mx-auto w-full max-w-6xl rounded-[32px] border border-black/10 bg-white p-4 shadow-soft md:p-6"
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
+              >
+                <div className="relative overflow-hidden rounded-[24px] border border-black/10 bg-white">
+                  <div className="absolute z-10 px-3 py-2 rounded-full shadow-sm pointer-events-none left-4 top-4 bg-white/90">
+                    <img
+                      src={wordmarkLogo}
+                      alt="Archeion"
+                      className="w-auto h-5"
+                    />
+                  </div>
                   <div
                     className="flex transition-transform duration-700 ease-out"
                     style={{ transform: `translateX(-${slideIndex * 100}%)` }}
@@ -511,17 +555,17 @@ export default function App() {
                   type="button"
                   onClick={goPrev}
                   aria-label="Previous screenshot"
-                  className="absolute left-6 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-black/10 bg-white/90 text-ink shadow-sm transition hover:-translate-y-1/2 hover:bg-white"
+                  className="absolute flex items-center justify-center w-10 h-10 transition -translate-y-1/2 border rounded-full shadow-sm left-6 top-1/2 border-black/10 bg-white/90 text-ink hover:-translate-y-1/2 hover:bg-white"
                 >
-                  <LuChevronLeft className="h-5 w-5" aria-hidden="true" />
+                  <LuChevronLeft className="w-5 h-5" aria-hidden="true" />
                 </button>
                 <button
                   type="button"
                   onClick={goNext}
                   aria-label="Next screenshot"
-                  className="absolute right-6 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-black/10 bg-white/90 text-ink shadow-sm transition hover:-translate-y-1/2 hover:bg-white"
+                  className="absolute flex items-center justify-center w-10 h-10 transition -translate-y-1/2 border rounded-full shadow-sm right-6 top-1/2 border-black/10 bg-white/90 text-ink hover:-translate-y-1/2 hover:bg-white"
                 >
-                  <LuChevronRight className="h-5 w-5" aria-hidden="true" />
+                  <LuChevronRight className="w-5 h-5" aria-hidden="true" />
                 </button>
               </div>
             </div>
@@ -537,7 +581,7 @@ export default function App() {
               <p className="text-sm font-semibold uppercase tracking-[0.35em] text-muted">
                 Early access
               </p>
-              <h2 className="mt-5 font-display text-4xl font-semibold text-ink md:text-5xl">
+              <h2 className="mt-5 text-4xl font-semibold font-display text-ink md:text-5xl">
                 Ready to stop chasing documents?
               </h2>
               <p className="mt-5 text-xl text-muted">
@@ -545,12 +589,12 @@ export default function App() {
                 accountants.
               </p>
             </div>
-            <form className="flex w-full flex-col gap-3 sm:flex-row">
+            <form className="flex flex-col w-full gap-3 sm:flex-row">
               <input
                 type="email"
                 placeholder="Your work email"
                 required
-                className="h-14 min-w-0 flex-1 rounded-full border border-black/10 bg-white px-6 text-lg shadow-sm focus:border-emerald-500 focus:outline-none"
+                className="flex-1 min-w-0 px-6 text-lg bg-white border rounded-full shadow-sm h-14 border-black/10 focus:border-emerald-500 focus:outline-none"
               />
               <button
                 className="h-14 w-full rounded-full bg-accent px-7 text-lg font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-accentDark sm:w-auto"
@@ -564,7 +608,7 @@ export default function App() {
       </main>
 
       <footer className="px-6 pb-10">
-        <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3 text-sm text-muted">
+        <div className="flex flex-wrap items-center justify-between w-full max-w-6xl gap-3 mx-auto text-sm text-muted">
           <span>Archeion — built for small accounting firms in Cyprus.</span>
           <span>© 2026 Archeion</span>
         </div>
