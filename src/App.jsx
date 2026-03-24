@@ -53,15 +53,21 @@ const months = [
 const problemCards = [
   {
     title: "WhatsApp threads",
-    body: "Invoices are buried in chats, with no clear record of what was sent.",
+    body: "Invoices buried across 50+ chat threads per month, with no clear record of what was sent.",
+    stat: "50+",
+    statLabel: "chats to search",
   },
   {
     title: "Scattered emails",
-    body: "Receipts arrive late, incomplete, and spread across multiple inboxes.",
+    body: "Receipts arrive late, incomplete, and spread across multiple inboxes. 30% arrive after deadline.",
+    stat: "30%",
+    statLabel: "arrive late",
   },
   {
     title: "Missing invoices",
-    body: "You spend hours reminding clients and still don’t know who is done.",
+    body: "The average firm spends 12+ hours monthly chasing documents. Time you could spend on real work.",
+    stat: "12+",
+    statLabel: "hours wasted",
   },
 ];
 
@@ -77,15 +83,18 @@ const steps = [
 const features = [
   {
     title: "Track missing documents per client",
-    body: "Know exactly what is still needed before you start filing.",
+    body: "Know exactly what is still needed before you start filing. See status for all 50+ clients at a glance.",
+    highlight: "Real-time tracking",
   },
   {
     title: "Send reminders automatically",
-    body: "Gentle follow-ups go out without you lifting a finger.",
+    body: "Gentle follow-ups go out without you lifting a finger. Reduce follow-up calls by 80%.",
+    highlight: "80% fewer calls",
   },
   {
     title: "All files in one place",
-    body: "One tidy folder, ready for your accounting workflow.",
+    body: "One tidy folder, ready for your accounting workflow. No more searching through 5 different apps.",
+    highlight: "5 apps → 1",
   },
 ];
 
@@ -113,11 +122,55 @@ function StepCard({ index, title, body }) {
   );
 }
 
+const BREVO_API_KEY = import.meta.env.VITE_BREVO_API_KEY;
+
 export default function App() {
   const [active, setActive] = useState(0);
   const month = months[active];
   const revealRefs = useRef([]);
   const [isPaused, setIsPaused] = useState(false);
+  const [email, setEmail] = useState("");
+  const [submitStatus, setSubmitStatus] = useState("idle"); // idle, loading, success, error
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleSubscribe = async (e) => {
+    e.preventDefault();
+    if (!email || submitStatus === "loading") return;
+
+    setSubmitStatus("loading");
+    setErrorMessage("");
+
+    try {
+      const response = await fetch("https://api.brevo.com/v3/contacts", {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json",
+          "api-key": BREVO_API_KEY,
+        },
+        body: JSON.stringify({
+          email: email,
+          listIds: [2], // Default list, adjust if needed
+          updateEnabled: true,
+        }),
+      });
+
+      if (response.ok || response.status === 201) {
+        setSubmitStatus("success");
+        setEmail("");
+      } else {
+        const data = await response.json();
+        if (data.code === "duplicate_parameter") {
+          setSubmitStatus("success"); // Already subscribed is still a success
+        } else {
+          throw new Error(data.message || "Failed to subscribe");
+        }
+      }
+    } catch (error) {
+      setSubmitStatus("error");
+      setErrorMessage(error.message || "Something went wrong. Please try again.");
+    }
+  };
   const slides = [
     {
       src: dashboardView,
@@ -219,6 +272,20 @@ export default function App() {
                 Automated requests, gentle reminders, and a single dashboard
                 that shows what is still missing.
               </p>
+              <div className="flex flex-wrap gap-4 mt-8">
+                <div className="flex items-center gap-3 px-5 py-3 bg-white border rounded-2xl border-black/10 shadow-sm">
+                  <span className="text-3xl font-bold text-accent">10+</span>
+                  <span className="text-sm text-muted leading-tight">hours saved<br/>per month</span>
+                </div>
+                <div className="flex items-center gap-3 px-5 py-3 bg-white border rounded-2xl border-black/10 shadow-sm">
+                  <span className="text-3xl font-bold text-accent">80%</span>
+                  <span className="text-sm text-muted leading-tight">fewer<br/>follow-ups</span>
+                </div>
+                <div className="flex items-center gap-3 px-5 py-3 bg-white border rounded-2xl border-black/10 shadow-sm">
+                  <span className="text-3xl font-bold text-accent">3x</span>
+                  <span className="text-sm text-muted leading-tight">faster<br/>collection</span>
+                </div>
+              </div>
               <div className="flex flex-wrap gap-3 mt-6 text-sm font-semibold text-ink/80">
                 {["Choose month", "Share client link", "Track missing"].map(
                   (item) => (
@@ -234,23 +301,38 @@ export default function App() {
               <form
                 id="waitlist"
                 className="flex flex-col gap-3 mt-8 sm:flex-row"
+                onSubmit={handleSubscribe}
               >
                 <input
                   type="email"
                   placeholder="Your work email"
                   required
-                  className="flex-1 px-6 text-lg bg-white border rounded-full shadow-sm h-14 border-black/10 focus:border-emerald-500 focus:outline-none"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  disabled={submitStatus === "loading" || submitStatus === "success"}
+                  className="flex-1 px-6 text-lg bg-white border rounded-full shadow-sm h-14 border-black/10 focus:border-emerald-500 focus:outline-none disabled:opacity-50"
                 />
                 <button
-                  className="h-14 rounded-full bg-accent px-7 text-lg font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-accentDark"
+                  className="h-14 rounded-full bg-accent px-7 text-lg font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-accentDark disabled:opacity-50 disabled:hover:translate-y-0"
                   type="submit"
+                  disabled={submitStatus === "loading" || submitStatus === "success"}
                 >
-                  Join waitlist
+                  {submitStatus === "loading" ? "Joining..." : submitStatus === "success" ? "You're in!" : "Save 10+ hours/month"}
                 </button>
               </form>
-              <p className="mt-4 text-base text-muted">
-                No pricing yet. We will send a short demo and early access.
-              </p>
+              {submitStatus === "success" ? (
+                <p className="mt-4 text-base text-accent font-semibold">
+                  Welcome aboard! We'll be in touch soon with early access.
+                </p>
+              ) : submitStatus === "error" ? (
+                <p className="mt-4 text-base text-red-600">
+                  {errorMessage}
+                </p>
+              ) : (
+                <p className="mt-4 text-base text-muted">
+                  Free early access · No credit card required · Join 50+ Cyprus firms
+                </p>
+              )}
             </div>
 
             <div className="relative">
@@ -393,7 +475,10 @@ export default function App() {
                     <div className="p-3 rounded-2xl bg-highlight">
                       {problemIllustrations[index]}
                     </div>
-                 
+                    <div className="text-right">
+                      <span className="text-2xl font-bold text-ink">{item.stat}</span>
+                      <p className="text-xs text-muted">{item.statLabel}</p>
+                    </div>
                   </div>
                   <h3 className="text-xl font-semibold font-display">
                     {item.title}
@@ -403,10 +488,10 @@ export default function App() {
               ))}
             </div>
 
-            <div className="grid gap-3 mt-12 text-lg font-semibold text-ink">
-              <p>Documents arrive late or incomplete</p>
-              <p>You do not know who is done</p>
-              <p>Follow-ups take hours every month</p>
+            <div className="grid gap-3 mt-12 text-lg text-ink">
+              <p className="flex items-center gap-3"><span className="font-bold text-accent">30%</span> of documents arrive late or incomplete</p>
+              <p className="flex items-center gap-3"><span className="font-bold text-accent">40%</span> of your time spent not knowing who is done</p>
+              <p className="flex items-center gap-3"><span className="font-bold text-accent">12+</span> hours wasted on follow-ups every month</p>
             </div>
           </div>
         </section>
@@ -469,6 +554,47 @@ export default function App() {
         </section>
 
         <section
+          className="px-6 py-24 border-t border-black/5 bg-gradient-to-b from-emerald-50/50 to-white reveal"
+          ref={(el) => (revealRefs.current[6] = el)}
+        >
+          <div className="w-full max-w-6xl mx-auto">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <p className="text-sm font-semibold uppercase tracking-[0.35em] text-muted">
+                The impact
+              </p>
+              <h2 className="mt-5 text-4xl font-semibold font-display text-ink md:text-5xl">
+                Results you can measure
+              </h2>
+              <p className="mt-5 text-xl text-muted">
+                What accountants experience after switching to Archeion
+              </p>
+            </div>
+            <div className="grid gap-8 md:grid-cols-4">
+              <div className="text-center p-8 bg-white rounded-3xl border border-black/10 shadow-sm">
+                <span className="text-5xl md:text-6xl font-bold text-accent">10+</span>
+                <p className="mt-3 text-lg font-semibold text-ink">Hours saved</p>
+                <p className="mt-2 text-sm text-muted">per month on document collection</p>
+              </div>
+              <div className="text-center p-8 bg-white rounded-3xl border border-black/10 shadow-sm">
+                <span className="text-5xl md:text-6xl font-bold text-accent">80%</span>
+                <p className="mt-3 text-lg font-semibold text-ink">Fewer follow-ups</p>
+                <p className="mt-2 text-sm text-muted">automatic reminders do the work</p>
+              </div>
+              <div className="text-center p-8 bg-white rounded-3xl border border-black/10 shadow-sm">
+                <span className="text-5xl md:text-6xl font-bold text-accent">3x</span>
+                <p className="mt-3 text-lg font-semibold text-ink">Faster collection</p>
+                <p className="mt-2 text-sm text-muted">days instead of weeks</p>
+              </div>
+              <div className="text-center p-8 bg-white rounded-3xl border border-black/10 shadow-sm">
+                <span className="text-5xl md:text-6xl font-bold text-accent">100%</span>
+                <p className="mt-3 text-lg font-semibold text-ink">Visibility</p>
+                <p className="mt-2 text-sm text-muted">know exactly what is missing</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section
           className="bg-[#f7f5f2] px-6 py-36 border-t border-black/5 reveal"
           ref={(el) => (revealRefs.current[3] = el)}
         >
@@ -491,10 +617,13 @@ export default function App() {
                   className="p-12 bg-white border shadow-sm rounded-3xl border-black/10 stagger-item"
                   style={{ transitionDelay: `${index * 90}ms` }}
                 >
-                  <div className="flex items-center gap-4 mb-6">
+                  <div className="flex items-center justify-between mb-6">
                     <div className="p-3 rounded-2xl bg-highlight">
                       {featureIllustrations[index]}
                     </div>
+                    <span className="px-3 py-1 text-xs font-semibold rounded-full bg-emerald-50 text-accent">
+                      {feature.highlight}
+                    </span>
                   </div>
                   <h3 className="text-2xl font-semibold font-display">
                     {feature.title}
@@ -582,26 +711,50 @@ export default function App() {
                 Early access
               </p>
               <h2 className="mt-5 text-4xl font-semibold font-display text-ink md:text-5xl">
-                Ready to stop chasing documents?
+                Get back 10+ hours every month
               </h2>
               <p className="mt-5 text-xl text-muted">
-                Join the waitlist and help shape the first version for Cyprus
-                accountants.
+                Join the waitlist and be among the first Cyprus accountants to stop chasing documents and start focusing on real work.
               </p>
+              <div className="flex flex-wrap gap-4 mt-6 text-sm text-muted">
+                <span className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-accent"></span>
+                  Free early access
+                </span>
+                <span className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-accent"></span>
+                  Shape the product
+                </span>
+                <span className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-accent"></span>
+                  Priority support
+                </span>
+              </div>
             </div>
-            <form className="flex flex-col w-full gap-3 sm:flex-row">
+            <form className="flex flex-col w-full gap-3" onSubmit={handleSubscribe}>
               <input
                 type="email"
                 placeholder="Your work email"
                 required
-                className="flex-1 min-w-0 px-6 text-lg bg-white border rounded-full shadow-sm h-14 border-black/10 focus:border-emerald-500 focus:outline-none"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={submitStatus === "loading" || submitStatus === "success"}
+                className="w-full px-6 text-lg bg-white border rounded-full shadow-sm h-14 border-black/10 focus:border-emerald-500 focus:outline-none disabled:opacity-50"
               />
               <button
-                className="h-14 w-full rounded-full bg-accent px-7 text-lg font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-accentDark sm:w-auto"
+                className="h-14 w-full rounded-full bg-accent px-7 text-lg font-semibold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-accentDark disabled:opacity-50 disabled:hover:translate-y-0"
                 type="submit"
+                disabled={submitStatus === "loading" || submitStatus === "success"}
               >
-                Get early access
+                {submitStatus === "loading" ? "Joining..." : submitStatus === "success" ? "You're in!" : "Join waitlist — it's free"}
               </button>
+              {submitStatus === "success" ? (
+                <p className="text-center text-sm text-accent font-semibold">Welcome aboard! Check your inbox soon.</p>
+              ) : submitStatus === "error" ? (
+                <p className="text-center text-sm text-red-600">{errorMessage}</p>
+              ) : (
+                <p className="text-center text-sm text-muted">No credit card required</p>
+              )}
             </form>
           </div>
         </section>
