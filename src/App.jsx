@@ -23,6 +23,7 @@ import newRequests from "./assets/new_requests.png";
 import requestsView from "./assets/requests_1.png";
 import requestAssignments from "./assets/requests_assignments_1.png"
 import notificationsView from "./assets/notifications.png";
+import uploadPage from "./assets/upload_page.png"
 import wordmarkLogo from "./assets/horizontal-wordmark-rcheion-tra.svg";
 
 const months = [
@@ -140,6 +141,7 @@ export default function App() {
   const month = months[active];
   const revealRefs = useRef([]);
   const [isPaused, setIsPaused] = useState(false);
+  const [lightbox, setLightbox] = useState(null); // holds the slide object when open
   const [email, setEmail] = useState("");
   const [submitStatus, setSubmitStatus] = useState("idle"); // idle, loading, success, error
   const [errorMessage, setErrorMessage] = useState("");
@@ -204,12 +206,22 @@ export default function App() {
       alt: "Request assignments",
     },
     {
+      src: uploadPage,
+      alt : "DocumentsUpload page"
+    },
+    {
       src: notificationsView,
       alt: "Notifications",
     },
   ];
   const [slideIndex, setSlideIndex] = useState(0);
   const prefersReducedMotion = useRef(false);
+
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") setLightbox(null); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -832,17 +844,17 @@ export default function App() {
             <div className="mt-12">
               {/* Browser chrome frame */}
               <div
-                className="relative mx-auto w-full max-w-6xl overflow-hidden rounded-2xl border border-black/10 shadow-2xl"
+                className="relative w-full max-w-6xl mx-auto overflow-hidden border shadow-2xl rounded-2xl border-black/10"
                 onMouseEnter={() => setIsPaused(true)}
                 onMouseLeave={() => setIsPaused(false)}
               >
                 {/* Title bar */}
                 <div className="flex items-center gap-2 px-4 py-3 border-b bg-zinc-100 border-black/10">
-                  <span className="w-3 h-3 rounded-full bg-red-400"></span>
-                  <span className="w-3 h-3 rounded-full bg-yellow-400"></span>
-                  <span className="w-3 h-3 rounded-full bg-green-400"></span>
+                  <span className="w-3 h-3 bg-red-400 rounded-full"></span>
+                  <span className="w-3 h-3 bg-yellow-400 rounded-full"></span>
+                  <span className="w-3 h-3 bg-green-400 rounded-full"></span>
                   <div className="flex-1 mx-4">
-                    <div className="flex items-center gap-2 px-3 py-1 text-xs text-center rounded-md bg-white/70 border border-black/10 text-zinc-400 max-w-xs mx-auto">
+                    <div className="flex items-center max-w-xs gap-2 px-3 py-1 mx-auto text-xs text-center border rounded-md bg-white/70 border-black/10 text-zinc-400">
                       <span className="w-2 h-2 rounded-full bg-accent/60 shrink-0"></span>
                       app.archeion.io
                     </div>
@@ -854,12 +866,15 @@ export default function App() {
                     className="flex transition-transform duration-700 ease-out will-change-transform"
                     style={{ transform: `translateX(-${slideIndex * 100}%)` }}
                   >
-                    {slides.map((slide) => (
+                    {slides.map((slide, i) => (
                       <img
                         key={slide.alt}
                         src={slide.src}
                         alt={slide.alt}
-                        className="w-full h-auto shrink-0"
+                        className="w-full h-auto shrink-0 cursor-zoom-in"
+                        decoding="async"
+                        fetchPriority={i === 0 ? "high" : "low"}
+                        onClick={() => setLightbox(slide)}
                       />
                     ))}
                   </div>
@@ -977,6 +992,28 @@ export default function App() {
           </div>
         </section>
       </main>
+
+      {/* Lightbox */}
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm cursor-zoom-out"
+          onClick={() => setLightbox(null)}
+        >
+          <img
+            src={lightbox.src}
+            alt={lightbox.alt}
+            className="object-contain max-w-full max-h-full shadow-2xl rounded-xl"
+            onClick={(e) => e.stopPropagation()}
+          />
+          <button
+            className="absolute flex items-center justify-center text-xl leading-none text-white transition rounded-full top-4 right-4 w-9 h-9 bg-white/10 hover:bg-white/20"
+            onClick={() => setLightbox(null)}
+            aria-label="Close"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       <footer className="px-6 pb-10">
         <div className="flex flex-wrap items-center justify-between w-full max-w-6xl gap-3 mx-auto text-sm text-muted">
