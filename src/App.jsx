@@ -24,6 +24,7 @@ import requestsView from "./assets/requests_1.png";
 import requestAssignments from "./assets/requests_assignments_1.png"
 import notificationsView from "./assets/notifications.png";
 import uploadPage from "./assets/upload_page.png"
+import emailReceive from "./assets/email_receive.png"
 import wordmarkLogo from "./assets/horizontal-wordmark-rcheion-tra.svg";
 
 const months = [
@@ -188,30 +189,42 @@ export default function App() {
     {
       src: dashboardView,
       alt: "Archeion dashboard overview",
+      caption: "Dashboard — see every client's status at a glance",
     },
     {
       src: clientNew,
       alt: "Create new client",
+      caption: "Add a new client in seconds and start collecting documents right away",
     },
     {
       src: newRequests,
       alt: "New document requests",
+      caption: "Create a request — choose what documents you need and who should send them",
     },
     {
       src: requestsView,
       alt: "Requests overview",
+      caption: "Requests overview — track what's been sent, what's pending, and what's missing",
     },
     {
       src: requestAssignments,
       alt: "Request assignments",
+      caption: "Assign a request to multiple clients at once — no repetition needed",
+    },
+    {
+      src : emailReceive,
+      alt : "Email Received",
+      caption : "Instant email received from clients " 
     },
     {
       src: uploadPage,
-      alt : "DocumentsUpload page"
+      alt: "Document upload page",
+      caption: "What your client sees — a simple upload page, no login required",
     },
     {
       src: notificationsView,
       alt: "Notifications",
+      caption: "Notifications — get alerted when a client uploads or when documents are still missing",
     },
   ];
   const [slideIndex, setSlideIndex] = useState(0);
@@ -879,6 +892,23 @@ export default function App() {
                     ))}
                   </div>
                 </div>
+                {/* Caption + dots */}
+                <div className="flex flex-col items-center gap-2 px-6 py-3 border-t border-black/5 bg-zinc-50">
+                  <div className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0"></span>
+                    <p className="text-sm text-center text-muted">{slides[slideIndex].caption}</p>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    {slides.map((_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setSlideIndex(i)}
+                        className={`h-1.5 rounded-full transition-all duration-300 ${i === slideIndex ? "w-6 bg-accent" : "w-1.5 bg-black/20"}`}
+                        aria-label={`Go to slide ${i + 1}`}
+                      />
+                    ))}
+                  </div>
+                </div>
                 {/* Prev / Next */}
                 <button
                   type="button"
@@ -896,17 +926,6 @@ export default function App() {
                 >
                   <LuChevronRight className="w-5 h-5" aria-hidden="true" />
                 </button>
-                {/* Dot indicators */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
-                  {slides.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setSlideIndex(i)}
-                      className={`h-1.5 rounded-full transition-all duration-300 ${i === slideIndex ? "w-6 bg-accent" : "w-1.5 bg-black/20"}`}
-                      aria-label={`Go to slide ${i + 1}`}
-                    />
-                  ))}
-                </div>
               </div>
             </div>
           </div>
