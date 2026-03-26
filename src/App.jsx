@@ -17,10 +17,13 @@ import {
   LuUser,
   LuUsers,
 } from "react-icons/lu";
-import clientView from "./assets/client_view.png";
-import clientNew from "./assets/client_new.png"
-import dashboardView from "./assets/dashboard_view.png";
-import wordmarkLogo from "./assets/wordmark-logo-tra.svg";
+import dashboardView from "./assets/dashboard_1.png";
+import clientNew from "./assets/create_client.png"
+import newRequests from "./assets/new_requests.png";
+import requestsView from "./assets/requests_1.png";
+import requestAssignments from "./assets/requests_assignments_1.png"
+import notificationsView from "./assets/notifications.png";
+import wordmarkLogo from "./assets/horizontal-wordmark-rcheion-tra.svg";
 
 const months = [
   {
@@ -185,13 +188,25 @@ export default function App() {
       alt: "Archeion dashboard overview",
     },
     {
-      src: clientView,
-      alt: "Archeion client profile view",
+      src: clientNew,
+      alt: "Create new client",
     },
     {
-      src: clientNew,
-      alt: "Create new client"
-    }
+      src: newRequests,
+      alt: "New document requests",
+    },
+    {
+      src: requestsView,
+      alt: "Requests overview",
+    },
+    {
+      src: requestAssignments,
+      alt: "Request assignments",
+    },
+    {
+      src: notificationsView,
+      alt: "Notifications",
+    },
   ];
   const [slideIndex, setSlideIndex] = useState(0);
   const prefersReducedMotion = useRef(false);
@@ -281,17 +296,17 @@ export default function App() {
                 that shows what is still missing.
               </p>
               <div className="flex flex-wrap gap-4 mt-8">
-                <div className="flex items-center gap-3 px-5 py-3 bg-white border rounded-2xl border-black/10 shadow-sm">
+                <div className="flex items-center gap-3 px-5 py-3 bg-white border shadow-sm rounded-2xl border-black/10">
                   <span className="text-3xl font-bold text-accent">10+</span>
-                  <span className="text-sm text-muted leading-tight">hours saved<br/>per month</span>
+                  <span className="text-sm leading-tight text-muted">hours saved<br/>per month</span>
                 </div>
-                <div className="flex items-center gap-3 px-5 py-3 bg-white border rounded-2xl border-black/10 shadow-sm">
+                <div className="flex items-center gap-3 px-5 py-3 bg-white border shadow-sm rounded-2xl border-black/10">
                   <span className="text-3xl font-bold text-accent">80%</span>
-                  <span className="text-sm text-muted leading-tight">fewer<br/>follow-ups</span>
+                  <span className="text-sm leading-tight text-muted">fewer<br/>follow-ups</span>
                 </div>
-                <div className="flex items-center gap-3 px-5 py-3 bg-white border rounded-2xl border-black/10 shadow-sm">
+                <div className="flex items-center gap-3 px-5 py-3 bg-white border shadow-sm rounded-2xl border-black/10">
                   <span className="text-3xl font-bold text-accent">3x</span>
-                  <span className="text-sm text-muted leading-tight">faster<br/>collection</span>
+                  <span className="text-sm leading-tight text-muted">faster<br/>collection</span>
                 </div>
               </div>
               <div className="flex flex-wrap gap-3 mt-6 text-sm font-semibold text-ink/80">
@@ -329,7 +344,7 @@ export default function App() {
                 </button>
               </form>
               {submitStatus === "success" ? (
-                <p className="mt-4 text-base text-accent font-semibold">
+                <p className="mt-4 text-base font-semibold text-accent">
                   Welcome aboard! We'll be in touch soon with early access.
                 </p>
               ) : submitStatus === "error" ? (
@@ -345,13 +360,13 @@ export default function App() {
 
             <div className="relative">
               {/* Decorative floating documents illustration */}
-              <svg className="absolute -right-8 -top-12 w-24 h-24 hidden lg:block" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+              <svg className="absolute hidden w-24 h-24 -right-8 -top-12 lg:block" viewBox="0 0 100 100" fill="none" aria-hidden="true">
                 <rect x="10" y="20" width="35" height="45" rx="4" stroke="#1e7f6d" strokeWidth="2" fill="white" transform="rotate(-12 27 42)"/>
                 <path d="M18 35 L38 35 M18 42 L32 42" stroke="#1e7f6d" strokeWidth="2" strokeLinecap="round" transform="rotate(-12 27 42)"/>
                 <circle cx="70" cy="25" r="12" stroke="#1e7f6d" strokeWidth="2" fill="white"/>
                 <path d="M66 25 L69 28 L75 22" stroke="#1e7f6d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-              <svg className="absolute -left-12 bottom-20 w-20 h-20 hidden lg:block" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+              <svg className="absolute hidden w-20 h-20 -left-12 bottom-20 lg:block" viewBox="0 0 80 80" fill="none" aria-hidden="true">
                 <rect x="10" y="15" width="30" height="40" rx="3" stroke="#f1c48c" strokeWidth="2" fill="white" transform="rotate(8 25 35)"/>
                 <path d="M16 28 L34 28 M16 35 L28 35" stroke="#f1c48c" strokeWidth="2" strokeLinecap="round" transform="rotate(8 25 35)"/>
                 <path d="M50 50 L65 35" stroke="#1e7f6d" strokeWidth="2" strokeLinecap="round" strokeDasharray="4 4"/>
@@ -523,12 +538,12 @@ export default function App() {
           ref={(el) => (revealRefs.current[7] = el)}
         >
           <div className="w-full max-w-6xl mx-auto">
-            <div className="text-center max-w-2xl mx-auto mb-16">
+            <div className="max-w-2xl mx-auto mb-16 text-center">
               <p className="text-sm font-semibold uppercase tracking-[0.35em] text-muted">
                 How it works
               </p>
               <h2 className="mt-5 text-4xl font-semibold font-display text-ink md:text-5xl">
-                From chaos to clarity in 4 steps
+                Simple for you. Even simpler for your clients.
               </h2>
             </div>
 
@@ -537,79 +552,79 @@ export default function App() {
               <div className="flex items-center justify-between gap-4">
                 {/* Step 1 */}
                 <div className="flex-1 text-center">
-                  <div className="mx-auto w-20 h-20 rounded-2xl bg-white border border-black/10 shadow-sm flex items-center justify-center mb-4">
-                    <LuUser className="w-10 h-10 text-accent" />
+                  <div className="flex items-center justify-center w-20 h-20 mx-auto mb-4 bg-white border shadow-sm rounded-2xl border-black/10">
+                    <LuClipboardList className="w-10 h-10 text-accent" />
                   </div>
-                  <div className="bg-white rounded-2xl border border-black/10 p-5 shadow-sm">
-                    <span className="inline-block px-2 py-1 text-xs font-bold rounded-full bg-accent text-white mb-2">1</span>
-                    <h3 className="font-semibold text-ink">You select the month</h3>
-                    <p className="text-sm text-muted mt-1">Choose clients & period</p>
+                  <div className="p-5 bg-white border shadow-sm rounded-2xl border-black/10">
+                    <span className="inline-block px-2 py-1 mb-2 text-xs font-bold text-white rounded-full bg-accent">1</span>
+                    <h3 className="font-semibold text-ink">Create a request</h3>
+                    <p className="mt-1 text-sm text-muted">Set what documents you need and assign it to multiple clients at once.</p>
                   </div>
                 </div>
 
                 {/* Arrow */}
-                <div className="flex-shrink-0 flex flex-col items-center">
+                <div className="flex flex-col items-center flex-shrink-0">
                   <LuArrowRight className="w-8 h-8 text-accent/50" />
                   <div className="w-16 h-0.5 bg-gradient-to-r from-accent/50 to-accent/20 -mt-4"></div>
                 </div>
 
                 {/* Step 2 */}
                 <div className="flex-1 text-center">
-                  <div className="mx-auto w-20 h-20 rounded-2xl bg-white border border-black/10 shadow-sm flex items-center justify-center mb-4">
-                    <LuSend className="w-10 h-10 text-amber-600" />
+                  <div className="flex items-center justify-center w-20 h-20 mx-auto mb-4 bg-white border shadow-sm rounded-2xl border-black/10">
+                    <LuLink className="w-10 h-10 text-amber-600" />
                   </div>
-                  <div className="bg-white rounded-2xl border border-black/10 p-5 shadow-sm">
-                    <span className="inline-block px-2 py-1 text-xs font-bold rounded-full bg-amber-500 text-white mb-2">2</span>
-                    <h3 className="font-semibold text-ink">Link sent to clients</h3>
-                    <p className="text-sm text-muted mt-1">Automatic email or WhatsApp</p>
+                  <div className="p-5 bg-white border shadow-sm rounded-2xl border-black/10">
+                    <span className="inline-block px-2 py-1 mb-2 text-xs font-bold text-white rounded-full bg-amber-500">2</span>
+                    <h3 className="font-semibold text-ink">Clients receive their own secure link</h3>
+                    <p className="mt-1 text-sm text-muted">Each client gets a unique upload link — no login required.</p>
                   </div>
                 </div>
 
                 {/* Arrow */}
-                <div className="flex-shrink-0 flex flex-col items-center">
+                <div className="flex flex-col items-center flex-shrink-0">
                   <LuArrowRight className="w-8 h-8 text-amber-500/50" />
                   <div className="w-16 h-0.5 bg-gradient-to-r from-amber-500/50 to-amber-500/20 -mt-4"></div>
                 </div>
 
                 {/* Step 3 */}
                 <div className="flex-1 text-center">
-                  <div className="mx-auto w-20 h-20 rounded-2xl bg-white border border-black/10 shadow-sm flex items-center justify-center mb-4">
+                  <div className="flex items-center justify-center w-20 h-20 mx-auto mb-4 bg-white border shadow-sm rounded-2xl border-black/10">
                     <LuUpload className="w-10 h-10 text-blue-600" />
                   </div>
-                  <div className="bg-white rounded-2xl border border-black/10 p-5 shadow-sm">
-                    <span className="inline-block px-2 py-1 text-xs font-bold rounded-full bg-blue-500 text-white mb-2">3</span>
-                    <h3 className="font-semibold text-ink">Clients upload files</h3>
-                    <p className="text-sm text-muted mt-1">No login needed, just click</p>
+                  <div className="p-5 bg-white border shadow-sm rounded-2xl border-black/10">
+                    <span className="inline-block px-2 py-1 mb-2 text-xs font-bold text-white bg-blue-500 rounded-full">3</span>
+                    <h3 className="font-semibold text-ink">Clients upload documents</h3>
+                    <p className="mt-1 text-sm text-muted">They upload invoices and receipts in seconds.</p>
                   </div>
                 </div>
 
                 {/* Arrow */}
-                <div className="flex-shrink-0 flex flex-col items-center">
+                <div className="flex flex-col items-center flex-shrink-0">
                   <LuArrowRight className="w-8 h-8 text-blue-500/50" />
                   <div className="w-16 h-0.5 bg-gradient-to-r from-blue-500/50 to-blue-500/20 -mt-4"></div>
                 </div>
 
                 {/* Step 4 */}
                 <div className="flex-1 text-center">
-                  <div className="mx-auto w-20 h-20 rounded-2xl bg-white border border-black/10 shadow-sm flex items-center justify-center mb-4">
+                  <div className="flex items-center justify-center w-20 h-20 mx-auto mb-4 bg-white border shadow-sm rounded-2xl border-black/10">
                     <LuLayoutDashboard className="w-10 h-10 text-emerald-600" />
                   </div>
-                  <div className="bg-white rounded-2xl border border-black/10 p-5 shadow-sm">
-                    <span className="inline-block px-2 py-1 text-xs font-bold rounded-full bg-emerald-500 text-white mb-2">4</span>
-                    <h3 className="font-semibold text-ink">Dashboard updates</h3>
-                    <p className="text-sm text-muted mt-1">See who's done instantly</p>
+                  <div className="p-5 bg-white border shadow-sm rounded-2xl border-black/10">
+                    <span className="inline-block px-2 py-1 mb-2 text-xs font-bold text-white rounded-full bg-emerald-500">4</span>
+                    <h3 className="font-semibold text-ink">Track everything in one place</h3>
+                    <p className="mt-1 text-sm text-muted">See what's missing, send reminders, and stay in control.</p>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Mobile Workflow - Vertical */}
-            <div className="lg:hidden space-y-6">
+            <div className="space-y-6 lg:hidden">
               {[
-                { icon: LuUser, color: "accent", bgColor: "bg-accent", title: "You select the month", desc: "Choose clients & period", num: 1 },
-                { icon: LuSend, color: "amber-600", bgColor: "bg-amber-500", title: "Link sent to clients", desc: "Automatic email or WhatsApp", num: 2 },
-                { icon: LuUpload, color: "blue-600", bgColor: "bg-blue-500", title: "Clients upload files", desc: "No login needed, just click", num: 3 },
-                { icon: LuLayoutDashboard, color: "emerald-600", bgColor: "bg-emerald-500", title: "Dashboard updates", desc: "See who's done instantly", num: 4 },
+                { icon: LuClipboardList, color: "accent", bgColor: "bg-accent", title: "Create a request", desc: "Set what documents you need and assign it to multiple clients at once.", num: 1 },
+                { icon: LuLink, color: "amber-600", bgColor: "bg-amber-500", title: "Clients receive their own secure link", desc: "Each client gets a unique upload link — no login required.", num: 2 },
+                { icon: LuUpload, color: "blue-600", bgColor: "bg-blue-500", title: "Clients upload documents", desc: "They upload invoices and receipts in seconds.", num: 3 },
+                { icon: LuLayoutDashboard, color: "emerald-600", bgColor: "bg-emerald-500", title: "Track everything in one place", desc: "See what's missing, send reminders, and stay in control.", num: 4 },
               ].map((step, index) => (
                 <div key={step.num} className="flex items-center gap-4">
                   <div className="flex flex-col items-center">
@@ -618,7 +633,7 @@ export default function App() {
                     </div>
                     {index < 3 && <div className="w-0.5 h-6 bg-black/10 mt-2"></div>}
                   </div>
-                  <div className="flex-1 bg-white rounded-xl border border-black/10 p-4 shadow-sm">
+                  <div className="flex-1 p-4 bg-white border shadow-sm rounded-xl border-black/10">
                     <span className={`inline-block px-2 py-0.5 text-xs font-bold rounded-full ${step.bgColor} text-white mb-1`}>{step.num}</span>
                     <h3 className="font-semibold text-ink">{step.title}</h3>
                     <p className="text-sm text-muted">{step.desc}</p>
@@ -629,9 +644,9 @@ export default function App() {
 
             {/* Visual summary */}
             <div className="mt-16 text-center">
-              <div className="inline-flex items-center gap-3 px-6 py-3 bg-white rounded-full border border-black/10 shadow-sm">
+              <div className="inline-flex items-center gap-3 px-6 py-3 bg-white border rounded-full shadow-sm border-black/10">
                 <LuFileCheck className="w-5 h-5 text-accent" />
-                <span className="text-ink font-medium">All documents organized automatically — zero manual tracking</span>
+                <span className="font-medium text-ink">No login for clients. No chasing emails. No missed documents.</span>
               </div>
             </div>
           </div>
@@ -663,7 +678,7 @@ export default function App() {
 
             <div className="relative">
               {/* Decorative organized documents illustration */}
-              <svg className="absolute -right-6 -top-10 w-28 h-28 hidden lg:block" viewBox="0 0 120 120" fill="none" aria-hidden="true">
+              <svg className="absolute hidden -right-6 -top-10 w-28 h-28 lg:block" viewBox="0 0 120 120" fill="none" aria-hidden="true">
                 {/* Neatly stacked documents */}
                 <rect x="30" y="20" width="45" height="58" rx="4" fill="white" stroke="#1e7f6d" strokeWidth="2"/>
                 <path d="M38 35 L65 35 M38 45 L58 45 M38 55 L62 55" stroke="#1e7f6d" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
@@ -673,7 +688,7 @@ export default function App() {
                 <circle cx="90" cy="35" r="15" fill="#cfeadf" stroke="#1e7f6d" strokeWidth="2"/>
                 <path d="M83 35 L88 40 L97 30" stroke="#1e7f6d" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
-              <svg className="absolute -left-8 bottom-10 w-20 h-20 hidden lg:block" viewBox="0 0 80 80" fill="none" aria-hidden="true">
+              <svg className="absolute hidden w-20 h-20 -left-8 bottom-10 lg:block" viewBox="0 0 80 80" fill="none" aria-hidden="true">
                 {/* Flowing arrow */}
                 <path d="M10 60 Q 25 40 40 45 Q 55 50 70 30" stroke="#1e7f6d" strokeWidth="2" strokeLinecap="round" fill="none" strokeDasharray="4 3"/>
                 <path d="M65 25 L70 30 L65 35" stroke="#1e7f6d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
@@ -720,7 +735,7 @@ export default function App() {
           ref={(el) => (revealRefs.current[6] = el)}
         >
           <div className="w-full max-w-6xl mx-auto">
-            <div className="text-center max-w-2xl mx-auto mb-16">
+            <div className="max-w-2xl mx-auto mb-16 text-center">
               <p className="text-sm font-semibold uppercase tracking-[0.35em] text-muted">
                 The impact
               </p>
@@ -732,23 +747,23 @@ export default function App() {
               </p>
             </div>
             <div className="grid gap-8 md:grid-cols-4">
-              <div className="text-center p-8 bg-white rounded-3xl border border-black/10 shadow-sm">
-                <span className="text-5xl md:text-6xl font-bold text-accent">10+</span>
+              <div className="p-8 text-center bg-white border shadow-sm rounded-3xl border-black/10">
+                <span className="text-5xl font-bold md:text-6xl text-accent">10+</span>
                 <p className="mt-3 text-lg font-semibold text-ink">Hours saved</p>
                 <p className="mt-2 text-sm text-muted">per month on document collection</p>
               </div>
-              <div className="text-center p-8 bg-white rounded-3xl border border-black/10 shadow-sm">
-                <span className="text-5xl md:text-6xl font-bold text-accent">80%</span>
+              <div className="p-8 text-center bg-white border shadow-sm rounded-3xl border-black/10">
+                <span className="text-5xl font-bold md:text-6xl text-accent">80%</span>
                 <p className="mt-3 text-lg font-semibold text-ink">Fewer follow-ups</p>
                 <p className="mt-2 text-sm text-muted">automatic reminders do the work</p>
               </div>
-              <div className="text-center p-8 bg-white rounded-3xl border border-black/10 shadow-sm">
-                <span className="text-5xl md:text-6xl font-bold text-accent">3x</span>
+              <div className="p-8 text-center bg-white border shadow-sm rounded-3xl border-black/10">
+                <span className="text-5xl font-bold md:text-6xl text-accent">3x</span>
                 <p className="mt-3 text-lg font-semibold text-ink">Faster collection</p>
                 <p className="mt-2 text-sm text-muted">days instead of weeks</p>
               </div>
-              <div className="text-center p-8 bg-white rounded-3xl border border-black/10 shadow-sm">
-                <span className="text-5xl md:text-6xl font-bold text-accent">100%</span>
+              <div className="p-8 text-center bg-white border shadow-sm rounded-3xl border-black/10">
+                <span className="text-5xl font-bold md:text-6xl text-accent">100%</span>
                 <p className="mt-3 text-lg font-semibold text-ink">Visibility</p>
                 <p className="mt-2 text-sm text-muted">know exactly what is missing</p>
               </div>
@@ -815,21 +830,28 @@ export default function App() {
               </p>
             </div>
             <div className="mt-12">
+              {/* Browser chrome frame */}
               <div
-                className="relative mx-auto w-full max-w-6xl rounded-[32px] border border-black/10 bg-white p-4 shadow-soft md:p-6"
+                className="relative mx-auto w-full max-w-6xl overflow-hidden rounded-2xl border border-black/10 shadow-2xl"
                 onMouseEnter={() => setIsPaused(true)}
                 onMouseLeave={() => setIsPaused(false)}
               >
-                <div className="relative overflow-hidden rounded-[24px] border border-black/10 bg-white">
-                  <div className="absolute z-10 px-3 py-2 rounded-full shadow-sm pointer-events-none left-4 top-4 bg-white/90">
-                    <img
-                      src={wordmarkLogo}
-                      alt="Archeion"
-                      className="w-auto h-5"
-                    />
+                {/* Title bar */}
+                <div className="flex items-center gap-2 px-4 py-3 border-b bg-zinc-100 border-black/10">
+                  <span className="w-3 h-3 rounded-full bg-red-400"></span>
+                  <span className="w-3 h-3 rounded-full bg-yellow-400"></span>
+                  <span className="w-3 h-3 rounded-full bg-green-400"></span>
+                  <div className="flex-1 mx-4">
+                    <div className="flex items-center gap-2 px-3 py-1 text-xs text-center rounded-md bg-white/70 border border-black/10 text-zinc-400 max-w-xs mx-auto">
+                      <span className="w-2 h-2 rounded-full bg-accent/60 shrink-0"></span>
+                      app.archeion.io
+                    </div>
                   </div>
+                </div>
+                {/* Slides */}
+                <div className="relative overflow-hidden bg-white">
                   <div
-                    className="flex transition-transform duration-700 ease-out"
+                    className="flex transition-transform duration-700 ease-out will-change-transform"
                     style={{ transform: `translateX(-${slideIndex * 100}%)` }}
                   >
                     {slides.map((slide) => (
@@ -837,16 +859,17 @@ export default function App() {
                         key={slide.alt}
                         src={slide.src}
                         alt={slide.alt}
-                        className="w-full shrink-0"
+                        className="w-full h-auto shrink-0"
                       />
                     ))}
                   </div>
                 </div>
+                {/* Prev / Next */}
                 <button
                   type="button"
                   onClick={goPrev}
                   aria-label="Previous screenshot"
-                  className="absolute flex items-center justify-center w-10 h-10 transition -translate-y-1/2 border rounded-full shadow-sm left-6 top-1/2 border-black/10 bg-white/90 text-ink hover:-translate-y-1/2 hover:bg-white"
+                  className="absolute flex items-center justify-center w-10 h-10 transition -translate-y-1/2 border rounded-full shadow-sm left-4 top-1/2 border-black/10 bg-white/90 text-ink hover:bg-white"
                 >
                   <LuChevronLeft className="w-5 h-5" aria-hidden="true" />
                 </button>
@@ -854,10 +877,21 @@ export default function App() {
                   type="button"
                   onClick={goNext}
                   aria-label="Next screenshot"
-                  className="absolute flex items-center justify-center w-10 h-10 transition -translate-y-1/2 border rounded-full shadow-sm right-6 top-1/2 border-black/10 bg-white/90 text-ink hover:-translate-y-1/2 hover:bg-white"
+                  className="absolute flex items-center justify-center w-10 h-10 transition -translate-y-1/2 border rounded-full shadow-sm right-4 top-1/2 border-black/10 bg-white/90 text-ink hover:bg-white"
                 >
                   <LuChevronRight className="w-5 h-5" aria-hidden="true" />
                 </button>
+                {/* Dot indicators */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
+                  {slides.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setSlideIndex(i)}
+                      className={`h-1.5 rounded-full transition-all duration-300 ${i === slideIndex ? "w-6 bg-accent" : "w-1.5 bg-black/20"}`}
+                      aria-label={`Go to slide ${i + 1}`}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -869,7 +903,7 @@ export default function App() {
         >
           <div className="mx-auto grid w-full max-w-6xl gap-12 rounded-3xl border border-black/10 bg-gradient-to-br from-[#fef7ec] to-[#eef8f5] p-12 shadow-soft md:grid-cols-[1.2fr_0.8fr] md:items-center relative overflow-hidden">
             {/* Decorative background illustration */}
-            <svg className="absolute right-0 top-0 w-64 h-64 opacity-10 hidden md:block" viewBox="0 0 200 200" fill="none" aria-hidden="true">
+            <svg className="absolute top-0 right-0 hidden w-64 h-64 opacity-10 md:block" viewBox="0 0 200 200" fill="none" aria-hidden="true">
               <circle cx="150" cy="50" r="80" stroke="#1e7f6d" strokeWidth="2"/>
               <circle cx="150" cy="50" r="60" stroke="#1e7f6d" strokeWidth="1.5"/>
               <circle cx="150" cy="50" r="40" stroke="#1e7f6d" strokeWidth="1"/>
@@ -879,7 +913,7 @@ export default function App() {
             <div>
               {/* Small illustration next to heading */}
               <div className="flex items-start gap-4">
-                <svg className="w-16 h-16 flex-shrink-0 hidden sm:block" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <svg className="flex-shrink-0 hidden w-16 h-16 sm:block" viewBox="0 0 64 64" fill="none" aria-hidden="true">
                   {/* Clock showing time saved */}
                   <circle cx="32" cy="32" r="28" fill="white" stroke="#1e7f6d" strokeWidth="2"/>
                   <circle cx="32" cy="32" r="24" fill="none" stroke="#1e7f6d" strokeWidth="1" opacity="0.3"/>
@@ -933,11 +967,11 @@ export default function App() {
                 {submitStatus === "loading" ? "Joining..." : submitStatus === "success" ? "You're in!" : "Join waitlist — it's free"}
               </button>
               {submitStatus === "success" ? (
-                <p className="text-center text-sm text-accent font-semibold">Welcome aboard! Check your inbox soon.</p>
+                <p className="text-sm font-semibold text-center text-accent">Welcome aboard! Check your inbox soon.</p>
               ) : submitStatus === "error" ? (
-                <p className="text-center text-sm text-red-600">{errorMessage}</p>
+                <p className="text-sm text-center text-red-600">{errorMessage}</p>
               ) : (
-                <p className="text-center text-sm text-muted">No credit card required</p>
+                <p className="text-sm text-center text-muted">No credit card required</p>
               )}
             </form>
           </div>
