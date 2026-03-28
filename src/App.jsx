@@ -13,6 +13,7 @@ import {
   LuMail,
   LuMessageSquare,
   LuSend,
+  LuShieldCheck,
   LuUpload,
   LuUser,
   LuUsers,
@@ -345,6 +346,10 @@ export default function App() {
                     </span>
                   )
                 )}
+                <span className="flex items-center gap-1.5 px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-full text-accentDark">
+                  <LuShieldCheck className="w-4 h-4" />
+                  AES-256 Encrypted
+                </span>
               </div>
               <form
                 id="waitlist"
@@ -833,6 +838,59 @@ export default function App() {
                   <p className="mt-5 text-lg text-muted">{feature.body}</p>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        <section
+          className="px-6 py-24 border-t border-black/5 bg-gradient-to-b from-white to-emerald-50/20 reveal"
+          ref={(el) => (revealRefs.current[8] = el)}
+        >
+          <div className="w-full max-w-6xl mx-auto">
+            <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:items-center">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.35em] text-muted">
+                  Security
+                </p>
+                <h2 className="mt-5 text-4xl font-semibold font-display text-ink md:text-5xl">
+                  Your clients' documents are encrypted the moment they're uploaded.
+                </h2>
+                <p className="mt-6 text-xl text-muted">
+                  Every file your client uploads — whether a payslip, invoice, or bank statement — is encrypted immediately on our servers using AES-256, the same standard used by banks and governments worldwide. The file is scrambled into unreadable data before it ever rests on disk. Only you can access it, and only through your secure account.
+                </p>
+              </div>
+              <div className="grid gap-6">
+                <div className="flex items-start gap-5 p-8 bg-white border shadow-sm rounded-3xl border-black/10">
+                  <div className="p-3 rounded-2xl bg-emerald-50 shrink-0">
+                    <LuShieldCheck className="w-8 h-8 text-accentDark" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-lg font-semibold text-ink">AES-256 Encrypted Storage</span>
+                      <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-emerald-50 text-accentDark">Bank-grade</span>
+                    </div>
+                    <p className="text-base text-muted">The same encryption standard trusted by financial institutions and governments worldwide.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-5 p-8 bg-white border shadow-sm rounded-3xl border-black/10">
+                  <div className="p-3 rounded-2xl bg-emerald-50 shrink-0">
+                    <LuUser className="w-8 h-8 text-accentDark" />
+                  </div>
+                  <div>
+                    <span className="text-lg font-semibold text-ink">Only you can access your files</span>
+                    <p className="mt-1 text-base text-muted">Files are tied to your account. Client upload links are one-way — clients can send, but cannot browse your data.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-5 p-8 bg-white border shadow-sm rounded-3xl border-black/10">
+                  <div className="p-3 rounded-2xl bg-emerald-50 shrink-0">
+                    <LuFileCheck className="w-8 h-8 text-accentDark" />
+                  </div>
+                  <div>
+                    <span className="text-lg font-semibold text-ink">Encrypted before it touches disk</span>
+                    <p className="mt-1 text-base text-muted">Files are scrambled into unreadable data on upload, not after. There is no window where your documents are exposed.</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
