@@ -383,7 +383,7 @@ export default function App() {
                 </p>
               ) : (
                 <p className="mt-4 text-base text-muted">
-                  Free early access · No credit card required · Join 50+ Cyprus firms
+                  Limited spots · No credit card required · Join 50+ Cyprus firms
                 </p>
               )}
             </div>
