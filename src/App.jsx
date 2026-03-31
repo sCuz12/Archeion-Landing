@@ -299,7 +299,7 @@ export default function App() {
             href="#waitlist"
             className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-semibold shadow-sm transition hover:-translate-y-0.5"
           >
-            Join waitlist
+            Request early access
           </a>
         </div>
       </header>
@@ -370,7 +370,7 @@ export default function App() {
                   type="submit"
                   disabled={submitStatus === "loading" || submitStatus === "success"}
                 >
-                  {submitStatus === "loading" ? "Joining..." : submitStatus === "success" ? "You're in!" : "Save 10+ hours/month"}
+                  {submitStatus === "loading" ? "Requesting..." : submitStatus === "success" ? "You're in!" : "Request early access"}
                 </button>
               </form>
               {submitStatus === "success" ? (
@@ -1056,7 +1056,7 @@ export default function App() {
                 type="submit"
                 disabled={submitStatus === "loading" || submitStatus === "success"}
               >
-                {submitStatus === "loading" ? "Joining..." : submitStatus === "success" ? "You're in!" : "Join waitlist — it's free"}
+                {submitStatus === "loading" ? "Requesting..." : submitStatus === "success" ? "You're in!" : "Request early access"}
               </button>
               {submitStatus === "success" ? (
                 <p className="text-sm font-semibold text-center text-accent">Welcome aboard! Check your inbox soon.</p>
