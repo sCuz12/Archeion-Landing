@@ -1022,7 +1022,7 @@ export default function App() {
                 Get back 10+ hours every month
               </h2>
               <p className="mt-5 text-xl text-muted">
-                Join the waitlist and be among the first Cyprus accountants to stop chasing documents and start focusing on real work.
+                Request early access and be among the first Cyprus accountants to stop chasing documents and start focusing on real work.
               </p>
               <div className="flex flex-wrap gap-4 mt-6 text-sm text-muted">
                 <span className="flex items-center gap-2">
