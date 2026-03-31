@@ -27,90 +27,7 @@ import notificationsView from "./assets/notifications.png";
 import uploadPage from "./assets/upload_page.png"
 import emailReceive from "./assets/email_receive.png"
 import wordmarkLogo from "./assets/horizontal-wordmark-rcheion-tra.svg";
-
-const months = [
-  {
-    label: "March 2026",
-    complete: "12 / 18 complete",
-    missing: 6,
-    rows: [
-      { name: "Georgiou & Co", status: "3 missing", type: "warn" },
-      { name: "Karina Travel Ltd", status: "All received", type: "ok" },
-      { name: "Limassol Auto", status: "2 missing", type: "warn" },
-      { name: "Oceanic Supplies", status: "1 missing", type: "warn" },
-    ],
-  },
-  {
-    label: "February 2026",
-    complete: "18 / 18 complete",
-    missing: 0,
-    rows: [
-      { name: "Georgiou & Co", status: "All received", type: "ok" },
-      { name: "Karina Travel Ltd", status: "All received", type: "ok" },
-      { name: "Limassol Auto", status: "All received", type: "ok" },
-      { name: "Oceanic Supplies", status: "All received", type: "ok" },
-    ],
-  },
-  {
-    label: "January 2026",
-    complete: "16 / 18 complete",
-    missing: 2,
-    rows: [
-      { name: "Georgiou & Co", status: "All received", type: "ok" },
-      { name: "Karina Travel Ltd", status: "1 missing", type: "warn" },
-      { name: "Limassol Auto", status: "1 missing", type: "warn" },
-      { name: "Oceanic Supplies", status: "All received", type: "ok" },
-    ],
-  },
-];
-
-const problemCards = [
-  {
-    title: "WhatsApp threads",
-    body: "Invoices buried across 50+ chat threads per month, with no clear record of what was sent.",
-    stat: "50+",
-    statLabel: "chats to search",
-  },
-  {
-    title: "Scattered emails",
-    body: "Receipts arrive late, incomplete, and spread across multiple inboxes. 30% arrive after deadline.",
-    stat: "30%",
-    statLabel: "arrive late",
-  },
-  {
-    title: "Missing invoices",
-    body: "The average firm spends 12+ hours monthly chasing documents. Time you could spend on real work.",
-    stat: "12+",
-    statLabel: "hours wasted",
-  },
-];
-
-const steps = [
-  { title: "Request with one click", body: "Select the month and client list." },
-  { title: "Clients upload via a simple link", body: "No login, no confusion." },
-  {
-    title: "See who is missing instantly",
-    body: "A dashboard that stays updated for you.",
-  },
-];
-
-const features = [
-  {
-    title: "Track missing documents per client",
-    body: "Know exactly what is still needed before you start filing. See status for all 50+ clients at a glance.",
-    highlight: "Real-time tracking",
-  },
-  {
-    title: "Send reminders automatically",
-    body: "Gentle follow-ups go out without you lifting a finger. Reduce follow-up calls by 80%.",
-    highlight: "80% fewer calls",
-  },
-  {
-    title: "All files in one place",
-    body: "One tidy folder, ready for your accounting workflow. No more searching through 5 different apps.",
-    highlight: "5 apps → 1",
-  },
-];
+import { translations } from "./translations";
 
 const problemIllustrations = [
   <LuMessageSquare key="whatsapp" className="w-10 h-10 text-emerald-700" />,
@@ -139,14 +56,101 @@ function StepCard({ index, title, body }) {
 const BREVO_API_KEY = import.meta.env.VITE_BREVO_API_KEY;
 
 export default function App() {
+  const [lang, setLang] = useState("en");
+  const t = translations[lang];
+
   const [active, setActive] = useState(0);
-  const month = months[active];
   const revealRefs = useRef([]);
   const [isPaused, setIsPaused] = useState(false);
-  const [lightbox, setLightbox] = useState(null); // holds the slide object when open
+  const [lightbox, setLightbox] = useState(null);
   const [email, setEmail] = useState("");
   const [submitStatus, setSubmitStatus] = useState("idle"); // idle, loading, success, error
   const [errorMessage, setErrorMessage] = useState("");
+
+  const months = [
+    {
+      label: t.march2026,
+      complete: t.complete_12_18,
+      missing: 6,
+      rows: [
+        { name: "Georgiou & Co", status: t.missing3, type: "warn" },
+        { name: "Karina Travel Ltd", status: t.allReceived, type: "ok" },
+        { name: "Limassol Auto", status: t.missing2, type: "warn" },
+        { name: "Oceanic Supplies", status: t.missing1, type: "warn" },
+      ],
+    },
+    {
+      label: t.february2026,
+      complete: t.complete_18_18,
+      missing: 0,
+      rows: [
+        { name: "Georgiou & Co", status: t.allReceived, type: "ok" },
+        { name: "Karina Travel Ltd", status: t.allReceived, type: "ok" },
+        { name: "Limassol Auto", status: t.allReceived, type: "ok" },
+        { name: "Oceanic Supplies", status: t.allReceived, type: "ok" },
+      ],
+    },
+    {
+      label: t.january2026,
+      complete: t.complete_16_18,
+      missing: 2,
+      rows: [
+        { name: "Georgiou & Co", status: t.allReceived, type: "ok" },
+        { name: "Karina Travel Ltd", status: t.missing1, type: "warn" },
+        { name: "Limassol Auto", status: t.missing1, type: "warn" },
+        { name: "Oceanic Supplies", status: t.allReceived, type: "ok" },
+      ],
+    },
+  ];
+
+  const month = months[active];
+
+  const problemCards = [
+    {
+      title: t.card1Title,
+      body: t.card1Body,
+      stat: "50+",
+      statLabel: t.card1StatLabel,
+    },
+    {
+      title: t.card2Title,
+      body: t.card2Body,
+      stat: "30%",
+      statLabel: t.card2StatLabel,
+    },
+    {
+      title: t.card3Title,
+      body: t.card3Body,
+      stat: "12+",
+      statLabel: t.card3StatLabel,
+    },
+  ];
+
+  const steps = [
+    { title: t.solStep1Title, body: t.solStep1Body },
+    { title: t.solStep2Title, body: t.solStep2Body },
+    { title: t.solStep3Title, body: t.solStep3Body },
+  ];
+
+  const features = [
+    { title: t.feat1Title, body: t.feat1Body, highlight: t.feat1Highlight },
+    { title: t.feat2Title, body: t.feat2Body, highlight: t.feat2Highlight },
+    { title: t.feat3Title, body: t.feat3Body, highlight: t.feat3Highlight },
+  ];
+
+  const slides = [
+    { src: dashboardView, alt: "Archeion dashboard overview", caption: t.slide1Caption },
+    { src: clientNew, alt: "Create new client", caption: t.slide2Caption },
+    { src: newRequests, alt: "New document requests", caption: t.slide3Caption },
+    { src: requestsView, alt: "Requests overview", caption: t.slide4Caption },
+    { src: requestAssignments, alt: "Request assignments", caption: t.slide5Caption },
+    { src: emailReceive, alt: "Email Received", caption: t.slide6Caption },
+    { src: uploadPage, alt: "Document upload page", caption: t.slide7Caption },
+    { src: notificationsView, alt: "Notifications", caption: t.slide8Caption },
+  ];
+
+  const [slideIndex, setSlideIndex] = useState(0);
+  const prefersReducedMotion = useRef(false);
 
   const handleSubscribe = async (e) => {
     e.preventDefault();
@@ -165,7 +169,7 @@ export default function App() {
         },
         body: JSON.stringify({
           email: email,
-          listIds: [2], // Default list, adjust if needed
+          listIds: [2],
           updateEnabled: true,
         }),
       });
@@ -176,7 +180,7 @@ export default function App() {
       } else {
         const data = await response.json();
         if (data.code === "duplicate_parameter") {
-          setSubmitStatus("success"); // Already subscribed is still a success
+          setSubmitStatus("success");
         } else {
           throw new Error(data.message || "Failed to subscribe");
         }
@@ -186,50 +190,6 @@ export default function App() {
       setErrorMessage(error.message || "Something went wrong. Please try again.");
     }
   };
-  const slides = [
-    {
-      src: dashboardView,
-      alt: "Archeion dashboard overview",
-      caption: "Dashboard — see every client's status at a glance",
-    },
-    {
-      src: clientNew,
-      alt: "Create new client",
-      caption: "Add a new client in seconds and start collecting documents right away",
-    },
-    {
-      src: newRequests,
-      alt: "New document requests",
-      caption: "Create a request — choose what documents you need and who should send them",
-    },
-    {
-      src: requestsView,
-      alt: "Requests overview",
-      caption: "Requests overview — track what's been sent, what's pending, and what's missing",
-    },
-    {
-      src: requestAssignments,
-      alt: "Request assignments",
-      caption: "Assign a request to multiple clients at once — no repetition needed",
-    },
-    {
-      src : emailReceive,
-      alt : "Email Received",
-      caption : "Instant email received from clients " 
-    },
-    {
-      src: uploadPage,
-      alt: "Document upload page",
-      caption: "What your client sees — a simple upload page, no login required",
-    },
-    {
-      src: notificationsView,
-      alt: "Notifications",
-      caption: "Notifications — get alerted when a client uploads or when documents are still missing",
-    },
-  ];
-  const [slideIndex, setSlideIndex] = useState(0);
-  const prefersReducedMotion = useRef(false);
 
   useEffect(() => {
     const onKey = (e) => { if (e.key === "Escape") setLightbox(null); };
@@ -295,12 +255,30 @@ export default function App() {
               className="w-auto h-8 md:h-9 lg:h-10"
             />
           </div>
-          <a
-            href="#waitlist"
-            className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-semibold shadow-sm transition hover:-translate-y-0.5"
-          >
-            Request early access
-          </a>
+          <div className="flex items-center gap-3">
+            {/* Language switcher */}
+            <div className="flex items-center gap-1 rounded-full border border-black/10 bg-white p-1 shadow-sm">
+              {["en", "el"].map((l) => (
+                <button
+                  key={l}
+                  onClick={() => setLang(l)}
+                  className={`rounded-full px-3 py-1 text-sm font-semibold transition-all duration-200 ${
+                    lang === l
+                      ? "bg-ink text-white shadow-sm"
+                      : "text-muted hover:text-ink"
+                  }`}
+                >
+                  {l === "en" ? "EN" : "EL"}
+                </button>
+              ))}
+            </div>
+            <a
+              href="#waitlist"
+              className="rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-semibold shadow-sm transition hover:-translate-y-0.5"
+            >
+              {t.navCta}
+            </a>
+          </div>
         </div>
       </header>
 
@@ -312,43 +290,40 @@ export default function App() {
           <div className="mx-auto grid w-full max-w-6xl gap-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
               <p className="mb-5 text-sm font-semibold uppercase tracking-[0.35em] text-muted">
-                For accounting firms in Cyprus
+                {t.heroTagline}
               </p>
               <h1 className="text-5xl font-semibold leading-tight font-display text-ink md:text-7xl">
-                Collect client invoices in days, not weeks
+                {t.heroHeading}
               </h1>
               <p className="text-2xl mt-7 text-muted">
-                Automated requests, gentle reminders, and a single dashboard
-                that shows what is still missing.
+                {t.heroSubheading}
               </p>
               <div className="flex flex-wrap gap-4 mt-8">
                 <div className="flex items-center gap-3 px-5 py-3 bg-white border shadow-sm rounded-2xl border-black/10">
                   <span className="text-3xl font-bold text-accent">10+</span>
-                  <span className="text-sm leading-tight text-muted">hours saved<br/>per month</span>
+                  <span className="text-sm leading-tight text-muted whitespace-pre-line">{t.statHoursSaved}</span>
                 </div>
                 <div className="flex items-center gap-3 px-5 py-3 bg-white border shadow-sm rounded-2xl border-black/10">
                   <span className="text-3xl font-bold text-accent">80%</span>
-                  <span className="text-sm leading-tight text-muted">fewer<br/>follow-ups</span>
+                  <span className="text-sm leading-tight text-muted whitespace-pre-line">{t.statFewerFollowups}</span>
                 </div>
                 <div className="flex items-center gap-3 px-5 py-3 bg-white border shadow-sm rounded-2xl border-black/10">
                   <span className="text-3xl font-bold text-accent">3x</span>
-                  <span className="text-sm leading-tight text-muted">faster<br/>collection</span>
+                  <span className="text-sm leading-tight text-muted whitespace-pre-line">{t.statFasterCollection}</span>
                 </div>
               </div>
               <div className="flex flex-wrap gap-3 mt-6 text-sm font-semibold text-ink/80">
-                {["Choose month", "Share client link", "Track missing"].map(
-                  (item) => (
-                    <span
-                      key={item}
-                      className="px-4 py-2 bg-white border rounded-full border-black/10"
-                    >
-                      {item}
-                    </span>
-                  )
-                )}
+                {[t.badge1, t.badge2, t.badge3].map((item) => (
+                  <span
+                    key={item}
+                    className="px-4 py-2 bg-white border rounded-full border-black/10"
+                  >
+                    {item}
+                  </span>
+                ))}
                 <span className="flex items-center gap-1.5 px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-full text-accentDark">
                   <LuShieldCheck className="w-4 h-4" />
-                  AES-256 Encrypted
+                  {t.badgeEncrypted}
                 </span>
               </div>
               <form
@@ -358,7 +333,7 @@ export default function App() {
               >
                 <input
                   type="email"
-                  placeholder="Your work email"
+                  placeholder={t.emailPlaceholder}
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -370,12 +345,12 @@ export default function App() {
                   type="submit"
                   disabled={submitStatus === "loading" || submitStatus === "success"}
                 >
-                  {submitStatus === "loading" ? "Requesting..." : submitStatus === "success" ? "You're in!" : "Request early access"}
+                  {submitStatus === "loading" ? t.ctaLoading : submitStatus === "success" ? t.ctaSuccess : t.ctaButton}
                 </button>
               </form>
               {submitStatus === "success" ? (
                 <p className="mt-4 text-base font-semibold text-accent">
-                  Welcome aboard! We'll be in touch soon with early access.
+                  {t.heroSuccessMsg}
                 </p>
               ) : submitStatus === "error" ? (
                 <p className="mt-4 text-base text-red-600">
@@ -383,7 +358,7 @@ export default function App() {
                 </p>
               ) : (
                 <p className="mt-4 text-base text-muted">
-                  Limited spots · No credit card required · Join 50+ Cyprus firms
+                  {t.heroSubtext}
                 </p>
               )}
             </div>
@@ -430,10 +405,10 @@ export default function App() {
                 </div>
                 <div className="flex flex-wrap gap-3 mt-5">
                   <button className="rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-white">
-                    Send reminders
+                    {t.btnSendReminders}
                   </button>
                   <button className="rounded-full bg-highlight px-5 py-2.5 text-sm font-semibold text-ink">
-                    View dashboard
+                    {t.btnViewDashboard}
                   </button>
                 </div>
               </div>
@@ -454,7 +429,7 @@ export default function App() {
                 ))}
               </div>
               <p className="mt-4 text-base text-muted">
-                One link per client. One dashboard for you.
+                {t.heroCaption}
               </p>
             </div>
           </div>
@@ -467,24 +442,23 @@ export default function App() {
           <div className="w-full max-w-6xl mx-auto">
             <div className="max-w-2xl">
               <p className="text-sm font-semibold uppercase tracking-[0.35em] text-muted">
-                The problem
+                {t.problemLabel}
               </p>
               <h2 className="mt-5 text-4xl font-semibold font-display text-ink md:text-6xl">
-                The monthly document chase
+                {t.problemHeading}
               </h2>
               <p className="mt-5 text-xl text-muted">
-                Documents arrive from everywhere, and you never know what is
-                still missing.
+                {t.problemSubheading}
               </p>
             </div>
             <div className="px-8 py-6 mt-10 bg-white border rounded-3xl border-black/10 shadow-soft">
               <div className="flex flex-wrap items-center justify-between gap-6">
                 <div>
                   <p className="mt-3 text-xl font-semibold text-ink">
-                    The messy monthly inbox
+                    {t.messyInboxTitle}
                   </p>
                   <p className="mt-2 text-base text-muted">
-                    Multiple channels, no single source of truth.
+                    {t.messyInboxDesc}
                   </p>
                 </div>
                 <svg
@@ -555,9 +529,9 @@ export default function App() {
             </div>
 
             <div className="grid gap-3 mt-12 text-lg text-ink">
-              <p className="flex items-center gap-3"><span className="font-bold text-accent">30%</span> of documents arrive late or incomplete</p>
-              <p className="flex items-center gap-3"><span className="font-bold text-accent">40%</span> of your time spent not knowing who is done</p>
-              <p className="flex items-center gap-3"><span className="font-bold text-accent">12+</span> hours wasted on follow-ups every month</p>
+              <p className="flex items-center gap-3"><span className="font-bold text-accent">30%</span> {t.stat30desc}</p>
+              <p className="flex items-center gap-3"><span className="font-bold text-accent">40%</span> {t.stat40desc}</p>
+              <p className="flex items-center gap-3"><span className="font-bold text-accent">12+</span> {t.stat12desc}</p>
             </div>
           </div>
         </section>
@@ -570,10 +544,10 @@ export default function App() {
           <div className="w-full max-w-6xl mx-auto">
             <div className="max-w-2xl mx-auto mb-16 text-center">
               <p className="text-sm font-semibold uppercase tracking-[0.35em] text-muted">
-                How it works
+                {t.howLabel}
               </p>
               <h2 className="mt-5 text-4xl font-semibold font-display text-ink md:text-5xl">
-                Simple for you. Even simpler for your clients.
+                {t.howHeading}
               </h2>
             </div>
 
@@ -587,8 +561,8 @@ export default function App() {
                   </div>
                   <div className="p-5 bg-white border shadow-sm rounded-2xl border-black/10">
                     <span className="inline-block px-2 py-1 mb-2 text-xs font-bold text-white rounded-full bg-accent">1</span>
-                    <h3 className="font-semibold text-ink">Create a request</h3>
-                    <p className="mt-1 text-sm text-muted">Set what documents you need and assign it to multiple clients at once.</p>
+                    <h3 className="font-semibold text-ink">{t.step1Title}</h3>
+                    <p className="mt-1 text-sm text-muted">{t.step1Desc}</p>
                   </div>
                 </div>
 
@@ -605,8 +579,8 @@ export default function App() {
                   </div>
                   <div className="p-5 bg-white border shadow-sm rounded-2xl border-black/10">
                     <span className="inline-block px-2 py-1 mb-2 text-xs font-bold text-white rounded-full bg-amber-500">2</span>
-                    <h3 className="font-semibold text-ink">Clients receive their own secure link</h3>
-                    <p className="mt-1 text-sm text-muted">Each client gets a unique upload link — no login required.</p>
+                    <h3 className="font-semibold text-ink">{t.step2Title}</h3>
+                    <p className="mt-1 text-sm text-muted">{t.step2Desc}</p>
                   </div>
                 </div>
 
@@ -623,8 +597,8 @@ export default function App() {
                   </div>
                   <div className="p-5 bg-white border shadow-sm rounded-2xl border-black/10">
                     <span className="inline-block px-2 py-1 mb-2 text-xs font-bold text-white bg-blue-500 rounded-full">3</span>
-                    <h3 className="font-semibold text-ink">Clients upload documents</h3>
-                    <p className="mt-1 text-sm text-muted">They upload invoices and receipts in seconds.</p>
+                    <h3 className="font-semibold text-ink">{t.step3Title}</h3>
+                    <p className="mt-1 text-sm text-muted">{t.step3Desc}</p>
                   </div>
                 </div>
 
@@ -641,8 +615,8 @@ export default function App() {
                   </div>
                   <div className="p-5 bg-white border shadow-sm rounded-2xl border-black/10">
                     <span className="inline-block px-2 py-1 mb-2 text-xs font-bold text-white rounded-full bg-emerald-500">4</span>
-                    <h3 className="font-semibold text-ink">Track everything in one place</h3>
-                    <p className="mt-1 text-sm text-muted">See what's missing, send reminders, and stay in control.</p>
+                    <h3 className="font-semibold text-ink">{t.step4Title}</h3>
+                    <p className="mt-1 text-sm text-muted">{t.step4Desc}</p>
                   </div>
                 </div>
               </div>
@@ -651,10 +625,10 @@ export default function App() {
             {/* Mobile Workflow - Vertical */}
             <div className="space-y-6 lg:hidden">
               {[
-                { icon: LuClipboardList, color: "accent", bgColor: "bg-accent", title: "Create a request", desc: "Set what documents you need and assign it to multiple clients at once.", num: 1 },
-                { icon: LuLink, color: "amber-600", bgColor: "bg-amber-500", title: "Clients receive their own secure link", desc: "Each client gets a unique upload link — no login required.", num: 2 },
-                { icon: LuUpload, color: "blue-600", bgColor: "bg-blue-500", title: "Clients upload documents", desc: "They upload invoices and receipts in seconds.", num: 3 },
-                { icon: LuLayoutDashboard, color: "emerald-600", bgColor: "bg-emerald-500", title: "Track everything in one place", desc: "See what's missing, send reminders, and stay in control.", num: 4 },
+                { icon: LuClipboardList, color: "accent", bgColor: "bg-accent", title: t.step1Title, desc: t.step1Desc, num: 1 },
+                { icon: LuLink, color: "amber-600", bgColor: "bg-amber-500", title: t.step2Title, desc: t.step2Desc, num: 2 },
+                { icon: LuUpload, color: "blue-600", bgColor: "bg-blue-500", title: t.step3Title, desc: t.step3Desc, num: 3 },
+                { icon: LuLayoutDashboard, color: "emerald-600", bgColor: "bg-emerald-500", title: t.step4Title, desc: t.step4Desc, num: 4 },
               ].map((step, index) => (
                 <div key={step.num} className="flex items-center gap-4">
                   <div className="flex flex-col items-center">
@@ -676,7 +650,7 @@ export default function App() {
             <div className="mt-16 text-center">
               <div className="inline-flex items-center gap-3 px-6 py-3 bg-white border rounded-full shadow-sm border-black/10">
                 <LuFileCheck className="w-5 h-5 text-accent" />
-                <span className="font-medium text-ink">No login for clients. No chasing emails. No missed documents.</span>
+                <span className="font-medium text-ink">{t.howSummary}</span>
               </div>
             </div>
           </div>
@@ -689,15 +663,15 @@ export default function App() {
           <div className="mx-auto grid w-full max-w-6xl gap-16 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div>
               <p className="text-sm font-semibold uppercase tracking-[0.35em] text-muted">
-                The solution
+                {t.solutionLabel}
               </p>
               <h2 className="mt-5 text-4xl font-semibold font-display text-ink md:text-6xl">
-                A calm, simple way to collect documents
+                {t.solutionHeading}
               </h2>
               <div className="grid gap-6 mt-12">
                 {steps.map((step, index) => (
                   <StepCard
-                    key={step.title}
+                    key={index}
                     index={index}
                     title={step.title}
                     body={step.body}
@@ -709,32 +683,28 @@ export default function App() {
             <div className="relative">
               {/* Decorative organized documents illustration */}
               <svg className="absolute hidden -right-6 -top-10 w-28 h-28 lg:block" viewBox="0 0 120 120" fill="none" aria-hidden="true">
-                {/* Neatly stacked documents */}
                 <rect x="30" y="20" width="45" height="58" rx="4" fill="white" stroke="#1e7f6d" strokeWidth="2"/>
                 <path d="M38 35 L65 35 M38 45 L58 45 M38 55 L62 55" stroke="#1e7f6d" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
                 <rect x="35" y="25" width="45" height="58" rx="4" fill="white" stroke="#1e7f6d" strokeWidth="2"/>
                 <path d="M43 40 L70 40 M43 50 L63 50 M43 60 L67 60" stroke="#1e7f6d" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
-                {/* Checkmark badge */}
                 <circle cx="90" cy="35" r="15" fill="#cfeadf" stroke="#1e7f6d" strokeWidth="2"/>
                 <path d="M83 35 L88 40 L97 30" stroke="#1e7f6d" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
               <svg className="absolute hidden w-20 h-20 -left-8 bottom-10 lg:block" viewBox="0 0 80 80" fill="none" aria-hidden="true">
-                {/* Flowing arrow */}
                 <path d="M10 60 Q 25 40 40 45 Q 55 50 70 30" stroke="#1e7f6d" strokeWidth="2" strokeLinecap="round" fill="none" strokeDasharray="4 3"/>
                 <path d="M65 25 L70 30 L65 35" stroke="#1e7f6d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
-                {/* Small document */}
                 <rect x="5" y="50" width="20" height="26" rx="3" fill="white" stroke="#1e7f6d" strokeWidth="1.5"/>
                 <path d="M9 58 L20 58 M9 64 L17 64" stroke="#1e7f6d" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
               </svg>
               <div className="p-10 bg-white border rounded-3xl border-black/10 shadow-soft">
                 <p className="text-base font-semibold text-muted">
-                  Missing documents overview
+                  {t.missingOverview}
                 </p>
               <div className="space-y-4 mt-7">
                 {[
-                  { label: "March 2026", status: "6 missing", tone: "warn" },
-                  { label: "February 2026", status: "All received", tone: "ok" },
-                  { label: "January 2026", status: "All received", tone: "ok" },
+                  { label: t.march2026, status: t.missing6, tone: "warn" },
+                  { label: t.february2026, status: t.allReceived, tone: "ok" },
+                  { label: t.january2026, status: t.allReceived, tone: "ok" },
                 ].map((item) => (
                   <div
                     key={item.label}
@@ -752,8 +722,8 @@ export default function App() {
                 ))}
               </div>
               <div className="flex items-center justify-between mt-6 text-sm text-muted">
-                <span>Automatic reminders</span>
-                <span>Every Friday at 15:00</span>
+                <span>{t.autoReminders}</span>
+                <span>{t.everyFriday}</span>
               </div>
               </div>
             </div>
@@ -767,35 +737,35 @@ export default function App() {
           <div className="w-full max-w-6xl mx-auto">
             <div className="max-w-2xl mx-auto mb-16 text-center">
               <p className="text-sm font-semibold uppercase tracking-[0.35em] text-muted">
-                The impact
+                {t.impactLabel}
               </p>
               <h2 className="mt-5 text-4xl font-semibold font-display text-ink md:text-5xl">
-                Results you can measure
+                {t.impactHeading}
               </h2>
               <p className="mt-5 text-xl text-muted">
-                What accountants experience after switching to Archeion
+                {t.impactSubheading}
               </p>
             </div>
             <div className="grid gap-8 md:grid-cols-4">
               <div className="p-8 text-center bg-white border shadow-sm rounded-3xl border-black/10">
                 <span className="text-5xl font-bold md:text-6xl text-accent">10+</span>
-                <p className="mt-3 text-lg font-semibold text-ink">Hours saved</p>
-                <p className="mt-2 text-sm text-muted">per month on document collection</p>
+                <p className="mt-3 text-lg font-semibold text-ink">{t.impact1Label}</p>
+                <p className="mt-2 text-sm text-muted">{t.impact1Desc}</p>
               </div>
               <div className="p-8 text-center bg-white border shadow-sm rounded-3xl border-black/10">
                 <span className="text-5xl font-bold md:text-6xl text-accent">80%</span>
-                <p className="mt-3 text-lg font-semibold text-ink">Fewer follow-ups</p>
-                <p className="mt-2 text-sm text-muted">automatic reminders do the work</p>
+                <p className="mt-3 text-lg font-semibold text-ink">{t.impact2Label}</p>
+                <p className="mt-2 text-sm text-muted">{t.impact2Desc}</p>
               </div>
               <div className="p-8 text-center bg-white border shadow-sm rounded-3xl border-black/10">
                 <span className="text-5xl font-bold md:text-6xl text-accent">3x</span>
-                <p className="mt-3 text-lg font-semibold text-ink">Faster collection</p>
-                <p className="mt-2 text-sm text-muted">days instead of weeks</p>
+                <p className="mt-3 text-lg font-semibold text-ink">{t.impact3Label}</p>
+                <p className="mt-2 text-sm text-muted">{t.impact3Desc}</p>
               </div>
               <div className="p-8 text-center bg-white border shadow-sm rounded-3xl border-black/10">
                 <span className="text-5xl font-bold md:text-6xl text-accent">100%</span>
-                <p className="mt-3 text-lg font-semibold text-ink">Visibility</p>
-                <p className="mt-2 text-sm text-muted">know exactly what is missing</p>
+                <p className="mt-3 text-lg font-semibold text-ink">{t.impact4Label}</p>
+                <p className="mt-2 text-sm text-muted">{t.impact4Desc}</p>
               </div>
             </div>
           </div>
@@ -808,13 +778,13 @@ export default function App() {
           <div className="w-full max-w-6xl mx-auto">
             <div className="max-w-2xl">
               <p className="text-base font-semibold uppercase tracking-[0.35em] text-muted">
-                The essentials
+                {t.featuresLabel}
               </p>
               <h2 className="mt-6 text-5xl font-semibold font-display text-ink md:text-7xl">
-                Only the essentials
+                {t.featuresHeading}
               </h2>
               <p className="mt-6 text-2xl text-muted">
-                Everything you need to stay in control each month.
+                {t.featuresSubheading}
               </p>
             </div>
             <div className="grid gap-10 mt-16 md:grid-cols-3">
@@ -850,13 +820,13 @@ export default function App() {
             <div className="grid gap-12 lg:grid-cols-[1fr_1fr] lg:items-center">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.35em] text-muted">
-                  Security
+                  {t.securityLabel}
                 </p>
                 <h2 className="mt-5 text-4xl font-semibold font-display text-ink md:text-5xl">
-                  Your clients' documents are encrypted the moment they're uploaded.
+                  {t.securityHeading}
                 </h2>
                 <p className="mt-6 text-xl text-muted">
-                  Every file your client uploads — whether a payslip, invoice, or bank statement — is encrypted immediately on our servers using AES-256, the same standard used by banks and governments worldwide. The file is scrambled into unreadable data before it ever rests on disk. Only you can access it, and only through your secure account.
+                  {t.securityBody}
                 </p>
               </div>
               <div className="grid gap-6">
@@ -866,10 +836,10 @@ export default function App() {
                   </div>
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-lg font-semibold text-ink">AES-256 Encrypted Storage</span>
-                      <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-emerald-50 text-accentDark">Bank-grade</span>
+                      <span className="text-lg font-semibold text-ink">{t.sec1Title}</span>
+                      <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-emerald-50 text-accentDark">{t.sec1Badge}</span>
                     </div>
-                    <p className="text-base text-muted">The same encryption standard trusted by financial institutions and governments worldwide.</p>
+                    <p className="text-base text-muted">{t.sec1Desc}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-5 p-8 bg-white border shadow-sm rounded-3xl border-black/10">
@@ -877,8 +847,8 @@ export default function App() {
                     <LuUser className="w-8 h-8 text-accentDark" />
                   </div>
                   <div>
-                    <span className="text-lg font-semibold text-ink">Only you can access your files</span>
-                    <p className="mt-1 text-base text-muted">Files are tied to your account. Client upload links are one-way — clients can send, but cannot browse your data.</p>
+                    <span className="text-lg font-semibold text-ink">{t.sec2Title}</span>
+                    <p className="mt-1 text-base text-muted">{t.sec2Desc}</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-5 p-8 bg-white border shadow-sm rounded-3xl border-black/10">
@@ -886,8 +856,8 @@ export default function App() {
                     <LuFileCheck className="w-8 h-8 text-accentDark" />
                   </div>
                   <div>
-                    <span className="text-lg font-semibold text-ink">Encrypted before it touches disk</span>
-                    <p className="mt-1 text-base text-muted">Files are scrambled into unreadable data on upload, not after. There is no window where your documents are exposed.</p>
+                    <span className="text-lg font-semibold text-ink">{t.sec3Title}</span>
+                    <p className="mt-1 text-base text-muted">{t.sec3Desc}</p>
                   </div>
                 </div>
               </div>
@@ -902,14 +872,13 @@ export default function App() {
           <div className="w-full max-w-6xl mx-auto">
             <div className="max-w-2xl">
               <p className="text-sm font-semibold uppercase tracking-[0.35em] text-muted">
-                The dashboard
+                {t.dashLabel}
               </p>
               <h2 className="mt-5 text-4xl font-semibold font-display text-ink md:text-6xl">
-                See the full picture at a glance
+                {t.dashHeading}
               </h2>
               <p className="mt-5 text-xl text-muted">
-                A single view of every client, every month, and what is still
-                missing.
+                {t.dashSubheading}
               </p>
             </div>
             <div className="mt-12">
@@ -1006,36 +975,34 @@ export default function App() {
               {/* Small illustration next to heading */}
               <div className="flex items-start gap-4">
                 <svg className="flex-shrink-0 hidden w-16 h-16 sm:block" viewBox="0 0 64 64" fill="none" aria-hidden="true">
-                  {/* Clock showing time saved */}
                   <circle cx="32" cy="32" r="28" fill="white" stroke="#1e7f6d" strokeWidth="2"/>
                   <circle cx="32" cy="32" r="24" fill="none" stroke="#1e7f6d" strokeWidth="1" opacity="0.3"/>
                   <path d="M32 16 L32 32 L44 38" stroke="#1e7f6d" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  {/* Checkmark badge */}
                   <circle cx="52" cy="12" r="10" fill="#cfeadf" stroke="#1e7f6d" strokeWidth="1.5"/>
                   <path d="M48 12 L51 15 L57 9" stroke="#1e7f6d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
                 <div>
                   <p className="text-sm font-semibold uppercase tracking-[0.35em] text-muted">
-                    Early access
+                    {t.earlyLabel}
                   </p>
               <h2 className="mt-5 text-4xl font-semibold font-display text-ink md:text-5xl">
-                Get back 10+ hours every month
+                {t.earlyHeading}
               </h2>
               <p className="mt-5 text-xl text-muted">
-                Request early access and be among the first Cyprus accountants to stop chasing documents and start focusing on real work.
+                {t.earlySubheading}
               </p>
               <div className="flex flex-wrap gap-4 mt-6 text-sm text-muted">
                 <span className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-accent"></span>
-                  Free early access
+                  {t.earlyBullet1}
                 </span>
                 <span className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-accent"></span>
-                  Shape the product
+                  {t.earlyBullet2}
                 </span>
                 <span className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-accent"></span>
-                  Priority support
+                  {t.earlyBullet3}
                 </span>
               </div>
                 </div>
@@ -1044,7 +1011,7 @@ export default function App() {
             <form className="flex flex-col w-full gap-3" onSubmit={handleSubscribe}>
               <input
                 type="email"
-                placeholder="Your work email"
+                placeholder={t.emailPlaceholder}
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -1056,14 +1023,14 @@ export default function App() {
                 type="submit"
                 disabled={submitStatus === "loading" || submitStatus === "success"}
               >
-                {submitStatus === "loading" ? "Requesting..." : submitStatus === "success" ? "You're in!" : "Request early access"}
+                {submitStatus === "loading" ? t.ctaLoading : submitStatus === "success" ? t.ctaSuccess : t.ctaButton}
               </button>
               {submitStatus === "success" ? (
-                <p className="text-sm font-semibold text-center text-accent">Welcome aboard! Check your inbox soon.</p>
+                <p className="text-sm font-semibold text-center text-accent">{t.earlySuccessMsg}</p>
               ) : submitStatus === "error" ? (
                 <p className="text-sm text-center text-red-600">{errorMessage}</p>
               ) : (
-                <p className="text-sm text-center text-muted">No credit card required</p>
+                <p className="text-sm text-center text-muted">{t.earlySubtext}</p>
               )}
             </form>
           </div>
@@ -1094,8 +1061,8 @@ export default function App() {
 
       <footer className="px-6 pb-10">
         <div className="flex flex-wrap items-center justify-between w-full max-w-6xl gap-3 mx-auto text-sm text-muted">
-          <span>Archeion — built for small accounting firms in Cyprus.</span>
-          <span>© 2026 Archeion</span>
+          <span>{t.footerTagline}</span>
+          <span>{t.footerCopyright}</span>
         </div>
       </footer>
     </div>
