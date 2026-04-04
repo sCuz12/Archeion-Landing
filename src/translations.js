@@ -92,7 +92,7 @@ export const translations = {
     // Impact section
     impactLabel: "The impact",
     impactHeading: "Results you can measure",
-    impactSubheading: "What accountants experience after switching to Archeion",
+    impactSubheading: "What accountants experience after switching to DocMinder",
     impact1Label: "Hours saved",
     impact1Desc: "per month on document collection",
     impact2Label: "Fewer follow-ups",
@@ -168,8 +168,8 @@ export const translations = {
     earlySubtext: "No credit card required",
 
     // Footer
-    footerTagline: "Archeion — built for small accounting firms in Cyprus.",
-    footerCopyright: "© 2026 Archeion",
+    footerTagline: "DocMinder — built for small accounting firms in Cyprus.",
+    footerCopyright: "© 2026 DocMinder",
   },
 
   el: {
@@ -270,7 +270,7 @@ export const translations = {
     impactLabel: "Ο αντίκτυπος",
     impactHeading: "Αποτελέσματα που μετριούνται",
     impactSubheading:
-      "Τι βιώνουν οι λογιστές μετά τη μετάβαση στο Archeion",
+      "Τι βιώνουν οι λογιστές μετά τη μετάβαση στο DocMinder",
     impact1Label: "Ώρες εξοικονόμησης",
     impact1Desc: "ανά μήνα στη συλλογή εγγράφων",
     impact2Label: "Λιγότερες υπενθυμίσεις",
@@ -347,7 +347,7 @@ export const translations = {
 
     // Footer
     footerTagline:
-      "Archeion — φτιαγμένο για μικρά λογιστικά γραφεία στην Κύπρο.",
-    footerCopyright: "© 2026 Archeion",
+      "DocMinder — φτιαγμένο για μικρά λογιστικά γραφεία στην Κύπρο.",
+    footerCopyright: "© 2026 DocMinder",
   },
 };

@@ -26,7 +26,7 @@ import requestAssignments from "./assets/requests_assignments_1.png"
 import notificationsView from "./assets/notifications.png";
 import uploadPage from "./assets/upload_page.png"
 import emailReceive from "./assets/email_receive.png"
-import wordmarkLogo from "./assets/horizontal-wordmark-rcheion-tra.svg";
+import wordmarkLogo from "./assets/horizontal-wordmark-docminder-tra.svg";
 import { translations } from "./translations";
 
 const problemIllustrations = [
@@ -139,7 +139,7 @@ export default function App() {
   ];
 
   const slides = [
-    { src: dashboardView, alt: "Archeion dashboard overview", caption: t.slide1Caption },
+    { src: dashboardView, alt: "DocMinder dashboard overview", caption: t.slide1Caption },
     { src: clientNew, alt: "Create new client", caption: t.slide2Caption },
     { src: newRequests, alt: "New document requests", caption: t.slide3Caption },
     { src: requestsView, alt: "Requests overview", caption: t.slide4Caption },
@@ -251,13 +251,13 @@ export default function App() {
           <div className="flex items-center">
             <img
               src={wordmarkLogo}
-              alt="Archeion"
+              alt="DocMinder"
               className="w-auto h-8 md:h-9 lg:h-10"
             />
           </div>
           <div className="flex items-center gap-3">
             {/* Language switcher */}
-            <div className="flex items-center gap-1 rounded-full border border-black/10 bg-white p-1 shadow-sm">
+            <div className="flex items-center gap-1 p-1 bg-white border rounded-full shadow-sm border-black/10">
               {["en", "el"].map((l) => (
                 <button
                   key={l}
@@ -301,15 +301,15 @@ export default function App() {
               <div className="flex flex-wrap gap-4 mt-8">
                 <div className="flex items-center gap-3 px-5 py-3 bg-white border shadow-sm rounded-2xl border-black/10">
                   <span className="text-3xl font-bold text-accent">10+</span>
-                  <span className="text-sm leading-tight text-muted whitespace-pre-line">{t.statHoursSaved}</span>
+                  <span className="text-sm leading-tight whitespace-pre-line text-muted">{t.statHoursSaved}</span>
                 </div>
                 <div className="flex items-center gap-3 px-5 py-3 bg-white border shadow-sm rounded-2xl border-black/10">
                   <span className="text-3xl font-bold text-accent">80%</span>
-                  <span className="text-sm leading-tight text-muted whitespace-pre-line">{t.statFewerFollowups}</span>
+                  <span className="text-sm leading-tight whitespace-pre-line text-muted">{t.statFewerFollowups}</span>
                 </div>
                 <div className="flex items-center gap-3 px-5 py-3 bg-white border shadow-sm rounded-2xl border-black/10">
                   <span className="text-3xl font-bold text-accent">3x</span>
-                  <span className="text-sm leading-tight text-muted whitespace-pre-line">{t.statFasterCollection}</span>
+                  <span className="text-sm leading-tight whitespace-pre-line text-muted">{t.statFasterCollection}</span>
                 </div>
               </div>
               <div className="flex flex-wrap gap-3 mt-6 text-sm font-semibold text-ink/80">
@@ -896,7 +896,7 @@ export default function App() {
                   <div className="flex-1 mx-4">
                     <div className="flex items-center max-w-xs gap-2 px-3 py-1 mx-auto text-xs text-center border rounded-md bg-white/70 border-black/10 text-zinc-400">
                       <span className="w-2 h-2 rounded-full bg-accent/60 shrink-0"></span>
-                      app.archeion.io
+                      app.DocMinder.io
                     </div>
                   </div>
                 </div>
